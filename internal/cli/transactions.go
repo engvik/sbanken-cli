@@ -1,4 +1,4 @@
-package sbankencli
+package cli
 
 import (
 	"fmt"
@@ -6,7 +6,7 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-func getTransactionsCommand() *cli.Command {
+func getTransactionsCommand(conn sbankenConn) *cli.Command {
 	return &cli.Command{
 		Name:  "transactions",
 		Usage: "interact with transactions",

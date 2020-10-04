@@ -1,4 +1,4 @@
-package sbankencli
+package cli
 
 import (
 	"fmt"
@@ -6,7 +6,7 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-func getStandingOrdersCommand() *cli.Command {
+func getStandingOrdersCommand(conn sbankenConn) *cli.Command {
 	return &cli.Command{
 		Name:  "standingorders",
 		Usage: "interact with standing orders",

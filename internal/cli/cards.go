@@ -1,4 +1,4 @@
-package sbankencli
+package cli
 
 import (
 	"fmt"
@@ -6,7 +6,7 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-func getCardsCommand() *cli.Command {
+func getCardsCommand(conn sbankenConn) *cli.Command {
 	return &cli.Command{
 		Name:  "cards",
 		Usage: "interact with cards",

@@ -1,4 +1,4 @@
-package sbankencli
+package cli
 
 import (
 	"fmt"
@@ -6,7 +6,7 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-func getPaymentsCommand() *cli.Command {
+func getPaymentsCommand(conn sbankenConn) *cli.Command {
 	return &cli.Command{
 		Name:  "payments",
 		Usage: "interact with payments",
