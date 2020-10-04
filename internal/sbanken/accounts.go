@@ -22,7 +22,7 @@ func (c *Connection) ListAccounts(cliCtx *cli.Context) error {
 
 	t := table.NewWriter()
 	t.SetOutputMirror(os.Stdout)
-	t.AppendHeader(table.Row{"ID", "Name", "Number", "Type", "Balance", "Available", "Credit Limit"})
+	t.AppendHeader(table.Row{"ID", "Type", "Name", "Number", "Balance", "Available", "Credit Limit"})
 
 	var rows []table.Row
 	var balance float32
@@ -30,7 +30,7 @@ func (c *Connection) ListAccounts(cliCtx *cli.Context) error {
 	var creditLimit float32
 
 	for _, a := range accounts {
-		rows = append(rows, table.Row{a.ID, a.Name, a.Number, a.Type, a.Balance, a.Available, a.CreditLimit})
+		rows = append(rows, table.Row{a.ID, a.Type, a.Name, a.Number, a.Balance, a.Available, a.CreditLimit})
 		balance += a.Balance
 		available += a.Available
 		creditLimit += a.CreditLimit
@@ -58,10 +58,9 @@ func (c *Connection) ReadAccount(cliCtx *cli.Context) error {
 
 	t := table.NewWriter()
 	t.SetOutputMirror(os.Stdout)
-	t.AppendHeader(table.Row{"ID", "Name", "Number", "Type", "Balance", "Available", "Credit Limit"})
-	t.AppendRow(table.Row{account.ID, account.Name, account.Number, account.Type, account.Balance, account.Available, account.CreditLimit})
+	t.AppendHeader(table.Row{"ID", "Type", "Name", "Number", "Balance", "Available", "Credit Limit"})
+	t.AppendRow(table.Row{account.ID, account.Type, account.Name, account.Number, account.Balance, account.Available, account.CreditLimit})
 	t.Render()
 
 	return nil
-
 }

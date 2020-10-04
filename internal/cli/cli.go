@@ -10,6 +10,7 @@ type sbankenConn interface {
 	ConnectClient(context.Context, *cli.Context) error
 	ListAccounts(*cli.Context) error
 	ReadAccount(*cli.Context) error
+	ListCards(*cli.Context) error
 }
 
 func New(ctx context.Context, conn sbankenConn) *cli.App {
