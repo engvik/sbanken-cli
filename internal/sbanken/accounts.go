@@ -2,10 +2,9 @@ package sbanken
 
 import (
 	"context"
-	"fmt"
-	"strings"
+	"os"
 
-	"github.com/engvik/sbanken-go"
+	"github.com/jedib0t/go-pretty/table"
 	"github.com/urfave/cli/v2"
 )
 
@@ -21,11 +20,25 @@ func (c *Connection) ListAccounts(cliCtx *cli.Context) error {
 		return err
 	}
 
-	printAccountHeader()
+	t := table.NewWriter()
+	t.SetOutputMirror(os.Stdout)
+	t.AppendHeader(table.Row{"ID", "Name", "Number", "Type", "Balance", "Available", "Credit Limit"})
+
+	var rows []table.Row
+	var balance float32
+	var available float32
+	var creditLimit float32
 
 	for _, a := range accounts {
-		printAccount(a)
+		rows = append(rows, table.Row{a.ID, a.Name, a.Number, a.Type, a.Balance, a.Available, a.CreditLimit})
+		balance += a.Balance
+		available += a.Available
+		creditLimit += a.CreditLimit
 	}
+
+	t.AppendRows(rows)
+	t.AppendFooter(table.Row{"", "", "", "", balance, available, creditLimit})
+	t.Render()
 
 	return nil
 }
@@ -43,30 +56,12 @@ func (c *Connection) ReadAccount(cliCtx *cli.Context) error {
 		return err
 	}
 
-	printAccountHeader()
-	printAccount(account)
+	t := table.NewWriter()
+	t.SetOutputMirror(os.Stdout)
+	t.AppendHeader(table.Row{"ID", "Name", "Number", "Type", "Balance", "Available", "Credit Limit"})
+	t.AppendRow(table.Row{account.ID, account.Name, account.Number, account.Type, account.Balance, account.Available, account.CreditLimit})
+	t.Render()
 
 	return nil
 
-}
-
-func printAccountHeader() {
-	header := "ID\tName\tNumber\tType\tBalance\tAvailable\tCreditLimit"
-	fmt.Println(header)
-	fmt.Println(strings.Repeat("-", len(header)))
-}
-
-func printAccount(a sbanken.Account) {
-	formattedAccount := fmt.Sprintf(
-		"%s\t%s\t%s\t%s\t%.2f\t%.2f\t%.2f",
-		a.ID,
-		a.Name,
-		a.Number,
-		a.Type,
-		a.Balance,
-		a.Available,
-		a.CreditLimit,
-	)
-
-	fmt.Println(formattedAccount)
 }
