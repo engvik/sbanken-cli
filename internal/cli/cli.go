@@ -3,12 +3,13 @@ package cli
 import (
 	"context"
 
-	"github.com/engvik/sbanken-cli/internal/sbanken"
 	"github.com/urfave/cli/v2"
 )
 
 type sbankenConn interface {
-	ConnectClient(context.Context, *sbanken.Config) error
+	ConnectClient(context.Context, *cli.Context) error
+	ListAccounts(*cli.Context) error
+	ReadAccount(*cli.Context) error
 }
 
 func New(ctx context.Context, conn sbankenConn) *cli.App {
@@ -17,15 +18,6 @@ func New(ctx context.Context, conn sbankenConn) *cli.App {
 		Usage:   "interact with sbanken through the command line",
 		Version: "1.0.0",
 		Flags:   getGlobalFlags(),
-		Action: func(c *cli.Context) error {
-			err := conn.ConnectClient(ctx, &sbanken.Config{
-				ClientID:     c.String("client-id"),
-				ClientSecret: c.String("client-secret"),
-				CustomerID:   c.String("customer-id"),
-			})
-
-			return err
-		},
 		Commands: []*cli.Command{
 			getAccountsCommand(conn),
 			getCardsCommand(conn),

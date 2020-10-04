@@ -1,23 +1,26 @@
 package cli
 
 import (
-	"fmt"
+	"context"
 
 	"github.com/urfave/cli/v2"
 )
 
-func getAccountsCommand(conn sbankenConn) *cli.Command {
+type accounts interface {
+	ConnectClient(context.Context, *cli.Context) error
+	ListAccounts(*cli.Context) error
+	ReadAccount(*cli.Context) error
+}
+
+func getAccountsCommand(conn accounts) *cli.Command {
 	return &cli.Command{
 		Name:  "accounts",
 		Usage: "interact with accounts",
 		Subcommands: []*cli.Command{
 			{
-				Name:  "list",
-				Usage: "list all accounts",
-				Action: func(c *cli.Context) error {
-					fmt.Println("list account")
-					return nil
-				},
+				Name:   "list",
+				Usage:  "list all accounts",
+				Action: conn.ListAccounts,
 			},
 			{
 				Name:  "read",
@@ -29,10 +32,7 @@ func getAccountsCommand(conn sbankenConn) *cli.Command {
 						Required: true,
 					},
 				},
-				Action: func(c *cli.Context) error {
-					fmt.Printf("read account: %s\n", c.String("id"))
-					return nil
-				},
+				Action: conn.ReadAccount,
 			},
 		},
 	}
