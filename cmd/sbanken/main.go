@@ -10,8 +10,29 @@ import (
 
 func main() {
 	app := &cli.App{
-		Name:  "sbanken",
-		Usage: "interact with sbanken through the command line",
+		Name:    "sbanken",
+		Usage:   "interact with sbanken through the command line",
+		Version: "1.0.0",
+		Flags: []cli.Flag{
+			&cli.StringFlag{
+				Name:     "client-id",
+				Usage:    "the client id",
+				Required: true,
+				EnvVars:  []string{"SBANKEN_CLIENT_ID"},
+			},
+			&cli.StringFlag{
+				Name:     "client-secret",
+				Usage:    "the client secret",
+				Required: true,
+				EnvVars:  []string{"SBANKEN_CLIENT_SECRET"},
+			},
+			&cli.StringFlag{
+				Name:     "customer-id",
+				Usage:    "customer id",
+				Required: true,
+				EnvVars:  []string{"SBANKEN_CUSTOMER_ID"},
+			},
+		},
 		Commands: []*cli.Command{
 			{
 				Name:  "accounts",
