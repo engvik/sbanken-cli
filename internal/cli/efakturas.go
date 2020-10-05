@@ -6,6 +6,10 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
+type efakturas interface {
+	ListNewEfakturas(*cli.Context) error
+}
+
 func getEfakturasCommand(conn sbankenConn) *cli.Command {
 	return &cli.Command{
 		Name:  "efakturas",
@@ -43,8 +47,8 @@ func getEfakturasCommand(conn sbankenConn) *cli.Command {
 				Action: func(c *cli.Context) error {
 					n := c.Args().Get(0)
 					if n == "new" {
-						fmt.Println("list new efakturas")
-						return nil
+						err := conn.ListNewEfakturas(c)
+						return err
 					}
 
 					fmt.Println("list all efakturas")

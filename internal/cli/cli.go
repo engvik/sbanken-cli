@@ -11,6 +11,7 @@ type sbankenConn interface {
 	ListAccounts(*cli.Context) error
 	ReadAccount(*cli.Context) error
 	ListCards(*cli.Context) error
+	ListNewEfakturas(*cli.Context) error
 }
 
 func New(ctx context.Context, conn sbankenConn) *cli.App {
