@@ -5,9 +5,27 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/engvik/sbanken-go"
 	"github.com/jedib0t/go-pretty/v6/table"
 	"github.com/urfave/cli/v2"
 )
+
+func (c *Connection) ListEfakturas(cliCtx *cli.Context) error {
+	ctx := context.Background()
+
+	if err := c.ConnectClient(ctx, cliCtx); err != nil {
+		return err
+	}
+
+	efakturas, err := c.Client.ListEfakturas(ctx, nil)
+	if err != nil {
+		return err
+	}
+
+	printEfakturas(efakturas)
+
+	return nil
+}
 
 func (c *Connection) ListNewEfakturas(cliCtx *cli.Context) error {
 	ctx := context.Background()
@@ -21,55 +39,7 @@ func (c *Connection) ListNewEfakturas(cliCtx *cli.Context) error {
 		return err
 	}
 
-	t := table.NewWriter()
-	t.SetOutputMirror(os.Stdout)
-	t.AppendHeader(table.Row{
-		"ID",
-		"Issuer Name",
-		"Document Type",
-		"Status",
-		"Notification Date",
-		"Original Due Date",
-		"Original Amount",
-		"Minimum Amoount",
-		"KID",
-	})
-
-	var rows []table.Row
-	var originalAmount float32
-	var updatedAmount float32
-	var minimumAmount float32
-
-	for _, e := range efakturas {
-		rows = append(rows, table.Row{
-			e.ID,
-			e.IssuerName,
-			e.DocumentType,
-			e.Status,
-			e.NotificationDate,
-			e.OriginalDueDate,
-			e.OriginalAmount,
-			e.MinimumAmount,
-			e.KID,
-		})
-
-		originalAmount += e.OriginalAmount
-		updatedAmount += e.UpdatedAmount
-		minimumAmount += e.MinimumAmount
-	}
-
-	t.AppendRows(rows)
-	t.AppendFooter(table.Row{
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		originalAmount,
-		minimumAmount,
-	})
-	t.Render()
+	printEfakturas(efakturas)
 
 	fmt.Println()
 	fmt.Println("To see all fields, use: sbanken efakturas read --id=<ID>")
@@ -111,4 +81,59 @@ func (c *Connection) ReadEfaktura(cliCtx *cli.Context) error {
 	t.Render()
 
 	return nil
+}
+
+func printEfakturas(efakturas []sbanken.Efaktura) {
+	t := table.NewWriter()
+	t.SetOutputMirror(os.Stdout)
+	t.AppendHeader(table.Row{
+		"ID",
+		"Issuer Name",
+		"Document Type",
+		"Status",
+		"Notification Date",
+		"Original Due Date",
+		"Original Amount",
+		"Minimum Amoount",
+		"KID",
+	})
+
+	var rows []table.Row
+	var originalAmount float32
+	var minimumAmount float32
+
+	for _, e := range efakturas {
+		rows = append(rows, table.Row{
+			e.ID,
+			e.IssuerName,
+			e.DocumentType,
+			e.Status,
+			e.NotificationDate,
+			e.OriginalDueDate,
+			e.OriginalAmount,
+			e.MinimumAmount,
+			e.KID,
+		})
+
+		originalAmount += e.OriginalAmount
+		minimumAmount += e.MinimumAmount
+	}
+
+	t.AppendRows(rows)
+	t.AppendFooter(table.Row{
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		originalAmount,
+		minimumAmount,
+	})
+	t.Render()
+
+	fmt.Println()
+	fmt.Println("To see all fields, use: sbanken efakturas read --id=<ID>")
+	fmt.Println("Detailed fields includes: Issuer ID, Reference, Update Due Date, Updated Amount, Credit Account Number")
+
 }

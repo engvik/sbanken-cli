@@ -7,6 +7,7 @@ import (
 )
 
 type efakturas interface {
+	ListEfakturas(*cli.Context) error
 	ListNewEfakturas(*cli.Context) error
 	ReadEfaktura(*cli.Context) error
 }
@@ -48,12 +49,11 @@ func getEfakturasCommand(conn sbankenConn) *cli.Command {
 				Action: func(c *cli.Context) error {
 					n := c.Args().Get(0)
 					if n == "new" {
-						err := conn.ListNewEfakturas(c)
-						return err
+						return conn.ListNewEfakturas(c)
+
 					}
 
-					fmt.Println("list all efakturas")
-					return nil
+					return conn.ListEfakturas(c)
 				},
 			},
 			{
