@@ -3,7 +3,9 @@ package sbanken
 import (
 	"context"
 	"fmt"
+	"log"
 	"os"
+	"time"
 
 	"github.com/engvik/sbanken-go"
 	"github.com/jedib0t/go-pretty/v6/table"
@@ -17,7 +19,12 @@ func (c *Connection) ListEfakturas(cliCtx *cli.Context) error {
 		return err
 	}
 
-	efakturas, err := c.Client.ListEfakturas(ctx, nil)
+	q, err := parseEfakturaListQuery(cliCtx)
+	if err != nil {
+		return err
+	}
+
+	efakturas, err := c.Client.ListEfakturas(ctx, q)
 	if err != nil {
 		return err
 	}
@@ -34,16 +41,17 @@ func (c *Connection) ListNewEfakturas(cliCtx *cli.Context) error {
 		return err
 	}
 
-	efakturas, err := c.Client.ListNewEfakturas(ctx, nil)
+	q, err := parseEfakturaListQuery(cliCtx)
+	if err != nil {
+		return err
+	}
+
+	efakturas, err := c.Client.ListNewEfakturas(ctx, q)
 	if err != nil {
 		return err
 	}
 
 	printEfakturas(efakturas)
-
-	fmt.Println()
-	fmt.Println("To see all fields, use: sbanken efakturas read --id=<ID>")
-	fmt.Println("Detailed fields includes: Issuer ID, Reference, Update Due Date, Updated Amount, Credit Account Number")
 
 	return nil
 }
@@ -135,5 +143,43 @@ func printEfakturas(efakturas []sbanken.Efaktura) {
 	fmt.Println()
 	fmt.Println("To see all fields, use: sbanken efakturas read --id=<ID>")
 	fmt.Println("Detailed fields includes: Issuer ID, Reference, Update Due Date, Updated Amount, Credit Account Number")
+}
 
+func parseEfakturaListQuery(ctx *cli.Context) (*sbanken.EfakturaListQuery, error) {
+
+	startDate := ctx.String("start-date")
+	endDate := ctx.String("end-date")
+
+	var startDateTime time.Time
+	var endDateTime time.Time
+
+	if startDate != "" {
+		t, err := time.Parse("2006-01-02", startDate)
+		if err != nil {
+			return nil, err
+		}
+
+		startDateTime = t
+	}
+
+	if endDate != "" {
+		t, err := time.Parse("2006-01-02", endDate)
+		if err != nil {
+			return nil, err
+		}
+
+		endDateTime = t
+	}
+
+	q := &sbanken.EfakturaListQuery{
+		StartDate: startDateTime,
+		EndDate:   endDateTime,
+		Status:    ctx.String("status"),
+		Index:     ctx.String("index"),
+		Length:    ctx.String("length"),
+	}
+
+	log.Println(q)
+
+	return q, nil
 }

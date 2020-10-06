@@ -27,11 +27,11 @@ func getEfakturasCommand(conn sbankenConn) *cli.Command {
 					},
 					&cli.StringFlag{
 						Name:  "start-date",
-						Usage: "start date to filter on",
+						Usage: "start date to filter on (YYYY-MM-DD)",
 					},
 					&cli.StringFlag{
 						Name:  "end-date",
-						Usage: "end date to filter on",
+						Usage: "end date to filter on (YYYY-MM-DD)",
 					},
 					&cli.StringFlag{
 						Name:  "status",
@@ -89,14 +89,6 @@ func getEfakturasCommand(conn sbankenConn) *cli.Command {
 						Name:     "id",
 						Usage:    "efaktura id to read",
 						Required: true,
-					},
-					&cli.StringFlag{
-						Name:  "index",
-						Usage: "index to filter on",
-					},
-					&cli.StringFlag{
-						Name:  "length",
-						Usage: "length to filter on",
 					},
 				},
 				Action: conn.ReadEfaktura,
