@@ -8,6 +8,7 @@ import (
 
 type efakturas interface {
 	ListNewEfakturas(*cli.Context) error
+	ReadEfaktura(*cli.Context) error
 }
 
 func getEfakturasCommand(conn sbankenConn) *cli.Command {
@@ -98,10 +99,7 @@ func getEfakturasCommand(conn sbankenConn) *cli.Command {
 						Usage: "length to filter on",
 					},
 				},
-				Action: func(c *cli.Context) error {
-					fmt.Println("read efaktura")
-					return nil
-				},
+				Action: conn.ReadEfaktura,
 			},
 		},
 	}
