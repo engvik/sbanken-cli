@@ -3,7 +3,6 @@ package sbanken
 import (
 	"context"
 	"fmt"
-	"log"
 	"os"
 	"time"
 
@@ -30,6 +29,24 @@ func (c *Connection) ListEfakturas(cliCtx *cli.Context) error {
 	}
 
 	printEfakturas(efakturas)
+
+	return nil
+}
+
+func (c *Connection) PayEfaktura(cliCtx *cli.Context) error {
+	ctx := context.Background()
+
+	if err := c.ConnectClient(ctx, cliCtx); err != nil {
+		return err
+	}
+
+	q := parseEfakturaPayQuery(cliCtx)
+
+	if err := c.Client.PayEfaktura(ctx, q); err != nil {
+		return err
+	}
+
+	fmt.Printf("Efaktura %s payed successfully with account %s\n", q.ID, q.AccountID)
 
 	return nil
 }
@@ -179,7 +196,15 @@ func parseEfakturaListQuery(ctx *cli.Context) (*sbanken.EfakturaListQuery, error
 		Length:    ctx.String("length"),
 	}
 
-	log.Println(q)
-
 	return q, nil
+}
+
+func parseEfakturaPayQuery(ctx *cli.Context) *sbanken.EfakturaPayQuery {
+	q := &sbanken.EfakturaPayQuery{
+		ID:                   ctx.String("id"),
+		AccountID:            ctx.String("account-id"),
+		PayOnlyMinimumAmount: ctx.Bool("pay-minimum"),
+	}
+
+	return q
 }

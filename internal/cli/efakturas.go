@@ -1,13 +1,12 @@
 package cli
 
 import (
-	"fmt"
-
 	"github.com/urfave/cli/v2"
 )
 
 type efakturas interface {
 	ListEfakturas(*cli.Context) error
+	PayEfaktura(*cli.Context) error
 	ListNewEfakturas(*cli.Context) error
 	ReadEfaktura(*cli.Context) error
 }
@@ -71,15 +70,11 @@ func getEfakturasCommand(conn sbankenConn) *cli.Command {
 						Required: true,
 					},
 					&cli.BoolFlag{
-						Name:     "pay-minimum",
-						Usage:    "pay only minimum",
-						Required: true,
+						Name:  "pay-minimum",
+						Usage: "pay only minimum",
 					},
 				},
-				Action: func(c *cli.Context) error {
-					fmt.Println("pay efakturas")
-					return nil
-				},
+				Action: conn.PayEfaktura,
 			},
 			{
 				Name:  "read",
