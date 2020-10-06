@@ -58,8 +58,15 @@ func (c *Connection) ReadAccount(cliCtx *cli.Context) error {
 
 	t := table.NewWriter()
 	t.SetOutputMirror(os.Stdout)
-	t.AppendHeader(table.Row{"ID", "Type", "Name", "Number", "Balance", "Available", "Credit Limit"})
-	t.AppendRow(table.Row{account.ID, account.Type, account.Name, account.Number, account.Balance, account.Available, account.CreditLimit})
+
+	t.AppendRow(table.Row{"ID", account.ID})
+	t.AppendRow(table.Row{"Type", account.Type})
+	t.AppendRow(table.Row{"Name", account.Name})
+	t.AppendRow(table.Row{"Number", account.Number})
+	t.AppendRow(table.Row{"Balance", account.Balance})
+	t.AppendRow(table.Row{"Available", account.Available})
+	t.AppendRow(table.Row{"Credit Limit", account.CreditLimit})
+
 	t.Render()
 
 	return nil
