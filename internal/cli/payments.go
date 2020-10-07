@@ -9,7 +9,7 @@ type payments interface {
 	ReadPayment(*cli.Context) error
 }
 
-func getPaymentsCommand(conn sbankenConn) *cli.Command {
+func getPaymentsCommand(conn payments) *cli.Command {
 	return &cli.Command{
 		Name:  "payments",
 		Usage: "interact with payments",
