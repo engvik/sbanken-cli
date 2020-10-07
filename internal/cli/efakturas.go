@@ -1,12 +1,17 @@
 package cli
 
 import (
-	"fmt"
-
 	"github.com/urfave/cli/v2"
 )
 
-func getEfakturasCommand(conn sbankenConn) *cli.Command {
+type efakturas interface {
+	ListEfakturas(*cli.Context) error
+	PayEfaktura(*cli.Context) error
+	ListNewEfakturas(*cli.Context) error
+	ReadEfaktura(*cli.Context) error
+}
+
+func getEfakturasCommand(conn efakturas) *cli.Command {
 	return &cli.Command{
 		Name:  "efakturas",
 		Usage: "interact with efakturas",
@@ -21,11 +26,11 @@ func getEfakturasCommand(conn sbankenConn) *cli.Command {
 					},
 					&cli.StringFlag{
 						Name:  "start-date",
-						Usage: "start date to filter on",
+						Usage: "start date to filter on (YYYY-MM-DD)",
 					},
 					&cli.StringFlag{
 						Name:  "end-date",
-						Usage: "end date to filter on",
+						Usage: "end date to filter on (YYYY-MM-DD)",
 					},
 					&cli.StringFlag{
 						Name:  "status",
@@ -43,12 +48,11 @@ func getEfakturasCommand(conn sbankenConn) *cli.Command {
 				Action: func(c *cli.Context) error {
 					n := c.Args().Get(0)
 					if n == "new" {
-						fmt.Println("list new efakturas")
-						return nil
+						return conn.ListNewEfakturas(c)
+
 					}
 
-					fmt.Println("list all efakturas")
-					return nil
+					return conn.ListEfakturas(c)
 				},
 			},
 			{
@@ -66,15 +70,11 @@ func getEfakturasCommand(conn sbankenConn) *cli.Command {
 						Required: true,
 					},
 					&cli.BoolFlag{
-						Name:     "pay-minimum",
-						Usage:    "pay only minimum",
-						Required: true,
+						Name:  "pay-minimum",
+						Usage: "pay only minimum",
 					},
 				},
-				Action: func(c *cli.Context) error {
-					fmt.Println("pay efakturas")
-					return nil
-				},
+				Action: conn.PayEfaktura,
 			},
 			{
 				Name:  "read",
@@ -85,19 +85,8 @@ func getEfakturasCommand(conn sbankenConn) *cli.Command {
 						Usage:    "efaktura id to read",
 						Required: true,
 					},
-					&cli.StringFlag{
-						Name:  "index",
-						Usage: "index to filter on",
-					},
-					&cli.StringFlag{
-						Name:  "length",
-						Usage: "length to filter on",
-					},
 				},
-				Action: func(c *cli.Context) error {
-					fmt.Println("read efaktura")
-					return nil
-				},
+				Action: conn.ReadEfaktura,
 			},
 		},
 	}

@@ -8,7 +8,7 @@ type cards interface {
 	ListCards(*cli.Context) error
 }
 
-func getCardsCommand(conn sbankenConn) *cli.Command {
+func getCardsCommand(conn cards) *cli.Command {
 	return &cli.Command{
 		Name:   "cards",
 		Usage:  "interact with cards",
