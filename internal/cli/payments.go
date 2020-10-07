@@ -1,10 +1,13 @@
 package cli
 
 import (
-	"fmt"
-
 	"github.com/urfave/cli/v2"
 )
+
+type payments interface {
+	ListPayments(*cli.Context) error
+	ReadPayment(*cli.Context) error
+}
 
 func getPaymentsCommand(conn sbankenConn) *cli.Command {
 	return &cli.Command{
@@ -20,11 +23,16 @@ func getPaymentsCommand(conn sbankenConn) *cli.Command {
 						Usage:    "account id to list payments from",
 						Required: true,
 					},
+					&cli.StringFlag{
+						Name:  "index",
+						Usage: "index to filter on",
+					},
+					&cli.StringFlag{
+						Name:  "length",
+						Usage: "length to filter on",
+					},
 				},
-				Action: func(c *cli.Context) error {
-					fmt.Println("list payments")
-					return nil
-				},
+				Action: conn.ListPayments,
 			},
 			{
 				Name:  "read",
@@ -41,10 +49,7 @@ func getPaymentsCommand(conn sbankenConn) *cli.Command {
 						Required: true,
 					},
 				},
-				Action: func(c *cli.Context) error {
-					fmt.Println("read payment")
-					return nil
-				},
+				Action: conn.ReadPayment,
 			},
 		},
 	}
