@@ -11,7 +11,7 @@ type efakturas interface {
 	ReadEfaktura(*cli.Context) error
 }
 
-func getEfakturasCommand(conn sbankenConn) *cli.Command {
+func getEfakturasCommand(conn efakturas) *cli.Command {
 	return &cli.Command{
 		Name:  "efakturas",
 		Usage: "interact with efakturas",
