@@ -19,8 +19,9 @@ func (c *Connection) ListPayments(cliCtx *cli.Context) error {
 	}
 
 	accountID := cliCtx.String("id")
+	q := parsePaymentListQuery(cliCtx)
 
-	payments, err := c.Client.ListPayments(ctx, accountID, nil)
+	payments, err := c.Client.ListPayments(ctx, accountID, q)
 	if err != nil {
 		return err
 	}
@@ -104,7 +105,7 @@ func (c *Connection) ReadPayment(cliCtx *cli.Context) error {
 	return nil
 }
 
-func parsePaymentsListQuery(ctx *cli.Context) *sbanken.PaymentListQuery {
+func parsePaymentListQuery(ctx *cli.Context) *sbanken.PaymentListQuery {
 	q := &sbanken.PaymentListQuery{
 		Index:  ctx.String("index"),
 		Length: ctx.String("length"),
