@@ -18,6 +18,7 @@ type sbankenConn interface {
 	ListPayments(*cli.Context) error
 	ReadPayment(*cli.Context) error
 	ListStandingOrders(*cli.Context) error
+	ListTransactions(*cli.Context) error
 }
 
 func New(ctx context.Context, conn sbankenConn) *cli.App {
