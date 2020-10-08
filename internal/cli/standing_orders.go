@@ -1,12 +1,14 @@
 package cli
 
 import (
-	"fmt"
-
 	"github.com/urfave/cli/v2"
 )
 
-func getStandingOrdersCommand(conn sbankenConn) *cli.Command {
+type standingOrders interface {
+	ListStandingOrders(*cli.Context) error
+}
+
+func getStandingOrdersCommand(conn standingOrders) *cli.Command {
 	return &cli.Command{
 		Name:  "standingorders",
 		Usage: "interact with standing orders",
@@ -16,10 +18,11 @@ func getStandingOrdersCommand(conn sbankenConn) *cli.Command {
 				Usage:    "account id to list payments from",
 				Required: true,
 			},
+			&cli.BoolFlag{
+				Name:  "details",
+				Usage: "list standing orders details",
+			},
 		},
-		Action: func(c *cli.Context) error {
-			fmt.Println("standingorders")
-			return nil
-		},
+		Action: conn.ListStandingOrders,
 	}
 }
