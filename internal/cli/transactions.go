@@ -1,12 +1,14 @@
 package cli
 
 import (
-	"fmt"
-
 	"github.com/urfave/cli/v2"
 )
 
-func getTransactionsCommand(conn sbankenConn) *cli.Command {
+type transactions interface {
+	ListTransactions(*cli.Context) error
+}
+
+func getTransactionsCommand(conn transactions) *cli.Command {
 	return &cli.Command{
 		Name:  "transactions",
 		Usage: "interact with transactions",
@@ -32,10 +34,19 @@ func getTransactionsCommand(conn sbankenConn) *cli.Command {
 				Name:  "length",
 				Usage: "length to filter on",
 			},
+			&cli.BoolFlag{
+				Name:  "details",
+				Usage: "list transaction details",
+			},
+			&cli.BoolFlag{
+				Name:  "card-details",
+				Usage: "list card details details if applicable",
+			},
+			&cli.BoolFlag{
+				Name:  "transaction-details",
+				Usage: "list more transaction details if applicable",
+			},
 		},
-		Action: func(c *cli.Context) error {
-			fmt.Println("transactions")
-			return nil
-		},
+		Action: conn.ListTransactions,
 	}
 }

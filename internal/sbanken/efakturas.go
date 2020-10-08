@@ -163,7 +163,6 @@ func printEfakturas(efakturas []sbanken.Efaktura) {
 }
 
 func parseEfakturaListQuery(ctx *cli.Context) (*sbanken.EfakturaListQuery, error) {
-
 	startDate := ctx.String("start-date")
 	endDate := ctx.String("end-date")
 
