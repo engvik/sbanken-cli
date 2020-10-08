@@ -21,7 +21,11 @@ func (c *Connection) Transfer(cliCtx *cli.Context) error {
 		return err
 	}
 
-	fmt.Printf("%d successfully transfered from %s to %s\n", cliCtx.Int("amount"), cliCtx.String("from"), cliCtx.String("to"))
+	if q.Message != "" {
+		fmt.Printf("%f successfully transfered from %s to %s: %s\n", q.Amount, q.FromAccountID, q.ToAccountID, q.Message)
+	} else {
+		fmt.Printf("%f successfully transfered from %s to %s\n", q.Amount, q.FromAccountID, q.ToAccountID)
+	}
 
 	return nil
 }
