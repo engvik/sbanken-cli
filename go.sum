@@ -4,10 +4,8 @@ github.com/cpuguy83/go-md2man/v2 v2.0.0-20190314233015-f79a8a8ca69d/go.mod h1:ma
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
-github.com/engvik/sbanken-go v1.0.2-0.20201006181152-4bdbcda86ef5 h1:g2qie53YVHh0EAQEbOnO6EQrnMdxOE1MXWuqxLD8Bds=
-github.com/engvik/sbanken-go v1.0.2-0.20201006181152-4bdbcda86ef5/go.mod h1:EvtkZuNhNnVGwiuyIz4u59h3mtKB9Uic36spBs/UHxc=
-github.com/engvik/sbanken-go v1.0.2-0.20201007194425-5e24e809e431 h1:s8vJdlw240UqX/dCAfmk/jEs8FJ0uU4ngwiPpk2eaaY=
-github.com/engvik/sbanken-go v1.0.2-0.20201007194425-5e24e809e431/go.mod h1:EvtkZuNhNnVGwiuyIz4u59h3mtKB9Uic36spBs/UHxc=
+github.com/engvik/sbanken-go v1.0.2 h1:NZ28cpWfT4BygYqU+Y+ERzzMnsma1Pr3Oem4U3t18UY=
+github.com/engvik/sbanken-go v1.0.2/go.mod h1:EvtkZuNhNnVGwiuyIz4u59h3mtKB9Uic36spBs/UHxc=
 github.com/jedib0t/go-pretty/v6 v6.0.5 h1:oOo0/jSb3NEYKT6l1hhFXoX2UZnkanMuCE2DVT1mqnE=
 github.com/jedib0t/go-pretty/v6 v6.0.5/go.mod h1:MTr6FgcfNdnN5wPVBzJ6mhJeDyiF0yBvS2TMXEV/XSU=
 github.com/mattn/go-runewidth v0.0.9 h1:Lm995f3rfxdpd6TSmuVCHVb/QhupuXlYr8sCI/QdE+0=
