@@ -1,12 +1,14 @@
 package cli
 
 import (
-	"fmt"
-
 	"github.com/urfave/cli/v2"
 )
 
-func getTransfersCommand(conn sbankenConn) *cli.Command {
+type transfer interface {
+	Transfer(*cli.Context) error
+}
+
+func getTransfersCommand(conn transfer) *cli.Command {
 	return &cli.Command{
 		Name:  "transfers",
 		Usage: "interact with transfers",
@@ -22,19 +24,15 @@ func getTransfersCommand(conn sbankenConn) *cli.Command {
 				Required: true,
 			},
 			&cli.StringFlag{
-				Name:     "message",
-				Usage:    "transfer message",
-				Required: true,
+				Name:  "message",
+				Usage: "transfer message",
 			},
-			&cli.Float64Flag{
+			&cli.IntFlag{
 				Name:     "amount",
 				Usage:    "the amount to transfer",
 				Required: true,
 			},
 		},
-		Action: func(c *cli.Context) error {
-			fmt.Println("transfers")
-			return nil
-		},
+		Action: conn.Transfer,
 	}
 }
