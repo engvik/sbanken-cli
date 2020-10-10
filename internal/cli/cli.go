@@ -2,8 +2,10 @@ package cli
 
 import (
 	"context"
+	"errors"
 
 	"github.com/urfave/cli/v2"
+	"github.com/urfave/cli/v2/altsrc"
 )
 
 type sbankenConn interface {
@@ -22,12 +24,34 @@ type sbankenConn interface {
 	Transfer(*cli.Context) error
 }
 
-func New(ctx context.Context, conn sbankenConn) *cli.App {
+func New(ctx context.Context, conn sbankenConn, version string) *cli.App {
+	flags := getGlobalFlags()
+
 	app := &cli.App{
 		Name:    "sbanken",
 		Usage:   "interact with sbanken through the command line",
-		Version: "1.0.0",
-		Flags:   getGlobalFlags(),
+		Version: version,
+		Before: func(c *cli.Context) error {
+			loadConfigFunc := altsrc.InitInputSourceWithContext(flags, altsrc.NewYamlSourceFromFlagFunc("config"))
+			err := loadConfigFunc(c)
+
+			if err != nil {
+				if c.String("client-id") == "" {
+					return errors.New("client-id is a required parameter")
+				}
+
+				if c.String("client-secret") == "" {
+					return errors.New("client-secret is a required parameter")
+				}
+
+				if c.String("customer-id") == "" {
+					return errors.New("customer-id is a required parameter")
+				}
+			}
+
+			return nil
+		},
+		Flags: flags,
 		Commands: []*cli.Command{
 			getAccountsCommand(conn),
 			getCardsCommand(conn),
