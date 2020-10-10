@@ -19,7 +19,7 @@ There are three ways to pass these values to `sbanken`:
 ### Configuration file
 
 ```yaml
-client-id: "my-client-id""
+client-id: "my-client-id"
 client-secret: "my-client-secret"
 customer-id: "my-customer-id"
 ```
