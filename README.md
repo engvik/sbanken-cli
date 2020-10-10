@@ -37,7 +37,7 @@ customer-id: "my-customer-id"
 ## Usage
 
 ```
-$ sbanken --config ~/.config/sbanken/config.yaml --help
+$ sbanken --help
 NAME:
    sbanken - interact with sbanken through the command line
 
