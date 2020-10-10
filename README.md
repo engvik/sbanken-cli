@@ -30,7 +30,7 @@ customer-id: "my-customer-id"
 
 `SBANKEN_CLIENT_ID="my-client-id" SBANKEN_CLIENT_SECRET="my-client-secret" CUSTOMER_ID="my-customer-id" sbanken accounts list`
 
-### Global application variables
+### Global application options
 
 `sbanken --client-id="my-client-id" --client-secret="my-client-secret" --customer-id="my-customer-id" accounts list`
 
