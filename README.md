@@ -14,9 +14,9 @@ TODO
 
 The interact with Sbanken you must provide a client ID, client secret and customer ID. See link under [Prerequisites](https://sbanken.no/bruke/utviklerportalen/) on how to obtain the client ID and client secret. The customer ID is you social security number.
 
-There are three ways to pass these values to `sbanken`.
+There are three ways to pass these values to `sbanken`:
 
-1) As a YAML-file:
+### Configuration file
 
 ```yaml
 client-id: "my-client-id""
@@ -26,11 +26,11 @@ customer-id: "my-customer-id"
 
 `sbanken --config ~/.config/sbanken/config.yaml accounts list`
 
-2) As environment variables:
+### Environment variables
 
 `SBANKEN_CLIENT_ID="my-client-id" SBANKEN_CLIENT_SECRET="my-client-secret" CUSTOMER_ID="my-customer-id" sbanken accounts list`
 
-3) As global parameters:
+### Global application variables
 
 `sbanken --client-id="my-client-id" --client-secret="my-client-secret" --customer-id="my-customer-id" accounts list`
 
