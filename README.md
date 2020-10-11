@@ -52,13 +52,13 @@ VERSION:
    1.0.0
 
 COMMANDS:
-   accounts, a        interact with accounts
-   cards, c           interact with cards
-   efakturas, e       interact with efakturas
-   payments, p        interact with payments
-   standingorders, s  interact with standing orders
-   transactions, ta   interact with transactions
-   transfers, tf      interact with transfers
+   accounts, a        list and read accounts
+   cards, c           list cards
+   efakturas, e       list, read and pay efakturas
+   payments, p        list and read payments
+   standingorders, s  list standing orders
+   transactions, ta   list transactions
+   transfers, tf      transfer money between accounts
    help, h            Shows a list of commands or help for one command
 
 GLOBAL OPTIONS:

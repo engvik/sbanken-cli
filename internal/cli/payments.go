@@ -12,7 +12,7 @@ type payments interface {
 func getPaymentsCommand(conn payments) *cli.Command {
 	return &cli.Command{
 		Name:    "payments",
-		Usage:   "interact with payments",
+		Usage:   "list and read payments",
 		Aliases: []string{"p"},
 		Subcommands: []*cli.Command{
 			{

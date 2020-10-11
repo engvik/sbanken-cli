@@ -29,7 +29,7 @@ func New(ctx context.Context, conn sbankenConn, version string) *cli.App {
 
 	app := &cli.App{
 		Name:    "sbanken",
-		Usage:   "interact with sbanken through the command line",
+		Usage:   "provides an easy way to interact with your bank from the terminal",
 		Version: version,
 		Before: func(c *cli.Context) error {
 			loadConfigFunc := altsrc.InitInputSourceWithContext(flags, altsrc.NewYamlSourceFromFlagFunc("config"))

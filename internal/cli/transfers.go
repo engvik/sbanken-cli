@@ -11,7 +11,7 @@ type transfer interface {
 func getTransfersCommand(conn transfer) *cli.Command {
 	return &cli.Command{
 		Name:    "transfers",
-		Usage:   "interact with transfers",
+		Usage:   "transfer money between accounts",
 		Aliases: []string{"tf"},
 		Flags: []cli.Flag{
 			&cli.StringFlag{

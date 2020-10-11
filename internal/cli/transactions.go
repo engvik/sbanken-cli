@@ -11,7 +11,7 @@ type transactions interface {
 func getTransactionsCommand(conn transactions) *cli.Command {
 	return &cli.Command{
 		Name:    "transactions",
-		Usage:   "interact with transactions",
+		Usage:   "list transactions",
 		Aliases: []string{"ta"},
 		Flags: []cli.Flag{
 			&cli.StringFlag{

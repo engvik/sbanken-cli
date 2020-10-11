@@ -15,7 +15,7 @@ type accounts interface {
 func getAccountsCommand(conn accounts) *cli.Command {
 	return &cli.Command{
 		Name:    "accounts",
-		Usage:   "interact with accounts",
+		Usage:   "list and read accounts",
 		Aliases: []string{"a"},
 		Subcommands: []*cli.Command{
 			{

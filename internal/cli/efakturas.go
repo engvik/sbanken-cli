@@ -14,7 +14,7 @@ type efakturas interface {
 func getEfakturasCommand(conn efakturas) *cli.Command {
 	return &cli.Command{
 		Name:    "efakturas",
-		Usage:   "interact with efakturas",
+		Usage:   "list, read and pay efakturas",
 		Aliases: []string{"e"},
 		Subcommands: []*cli.Command{
 			{

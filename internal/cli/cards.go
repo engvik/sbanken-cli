@@ -11,7 +11,7 @@ type cards interface {
 func getCardsCommand(conn cards) *cli.Command {
 	return &cli.Command{
 		Name:    "cards",
-		Usage:   "interact with cards",
+		Usage:   "list cards",
 		Aliases: []string{"c"},
 		Action:  conn.ListCards,
 	}
