@@ -26,6 +26,11 @@ customer-id: "my-customer-id"
 
 `sbanken --config ~/.config/sbanken/config.yaml accounts list`
 
+or 
+
+`SBANKEN_CONFIG="~/.config/sbanken/config.yaml" sbanken accounts list`
+
+
 ### Environment variables
 
 `SBANKEN_CLIENT_ID="my-client-id" SBANKEN_CLIENT_SECRET="my-client-secret" CUSTOMER_ID="my-customer-id" sbanken accounts list`

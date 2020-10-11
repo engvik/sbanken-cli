@@ -29,6 +29,7 @@ func getGlobalFlags() []cli.Flag {
 			Name:    "config",
 			Usage:   "path to YAML config",
 			Aliases: []string{"c"},
+			EnvVars: []string{"SBANKEN_CONFIG"},
 		},
 	}
 }
