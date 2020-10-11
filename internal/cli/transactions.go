@@ -10,8 +10,9 @@ type transactions interface {
 
 func getTransactionsCommand(conn transactions) *cli.Command {
 	return &cli.Command{
-		Name:  "transactions",
-		Usage: "interact with transactions",
+		Name:    "transactions",
+		Usage:   "interact with transactions",
+		Aliases: []string{"ta"},
 		Flags: []cli.Flag{
 			&cli.StringFlag{
 				Name:     "id",
@@ -19,32 +20,39 @@ func getTransactionsCommand(conn transactions) *cli.Command {
 				Required: true,
 			},
 			&cli.StringFlag{
-				Name:  "start-date",
-				Usage: "start date to filter on",
+				Name:    "start-date",
+				Usage:   "start date to filter on",
+				Aliases: []string{"sd"},
 			},
 			&cli.StringFlag{
-				Name:  "end-date",
-				Usage: "end date to filter on",
+				Name:    "end-date",
+				Usage:   "end date to filter on",
+				Aliases: []string{"ed"},
 			},
 			&cli.StringFlag{
-				Name:  "index",
-				Usage: "index to filter on",
+				Name:    "index",
+				Usage:   "index to filter on",
+				Aliases: []string{"i"},
 			},
 			&cli.StringFlag{
-				Name:  "length",
-				Usage: "length to filter on",
+				Name:    "length",
+				Usage:   "length to filter on",
+				Aliases: []string{"l"},
 			},
 			&cli.BoolFlag{
-				Name:  "details",
-				Usage: "list transaction details",
+				Name:    "details",
+				Usage:   "list transaction details",
+				Aliases: []string{"d"},
 			},
 			&cli.BoolFlag{
-				Name:  "card-details",
-				Usage: "list card details details if applicable",
+				Name:    "card-details",
+				Usage:   "list card details details if applicable",
+				Aliases: []string{"cd"},
 			},
 			&cli.BoolFlag{
-				Name:  "transaction-details",
-				Usage: "list more transaction details if applicable",
+				Name:    "transaction-details",
+				Usage:   "list more transaction details if applicable",
+				Aliases: []string{"td"},
 			},
 		},
 		Action: conn.ListTransactions,

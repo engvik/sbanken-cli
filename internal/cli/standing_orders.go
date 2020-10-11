@@ -10,8 +10,9 @@ type standingOrders interface {
 
 func getStandingOrdersCommand(conn standingOrders) *cli.Command {
 	return &cli.Command{
-		Name:  "standingorders",
-		Usage: "interact with standing orders",
+		Name:    "standingorders",
+		Usage:   "interact with standing orders",
+		Aliases: []string{"s"},
 		Flags: []cli.Flag{
 			&cli.StringFlag{
 				Name:     "id",
@@ -19,8 +20,9 @@ func getStandingOrdersCommand(conn standingOrders) *cli.Command {
 				Required: true,
 			},
 			&cli.BoolFlag{
-				Name:  "details",
-				Usage: "list standing orders details",
+				Name:    "details",
+				Usage:   "list standing orders details",
+				Aliases: []string{"d"},
 			},
 		},
 		Action: conn.ListStandingOrders,

@@ -14,17 +14,20 @@ type accounts interface {
 
 func getAccountsCommand(conn accounts) *cli.Command {
 	return &cli.Command{
-		Name:  "accounts",
-		Usage: "interact with accounts",
+		Name:    "accounts",
+		Usage:   "interact with accounts",
+		Aliases: []string{"a"},
 		Subcommands: []*cli.Command{
 			{
-				Name:   "list",
-				Usage:  "list all accounts",
-				Action: conn.ListAccounts,
+				Name:    "list",
+				Usage:   "list all accounts",
+				Aliases: []string{"l"},
+				Action:  conn.ListAccounts,
 			},
 			{
-				Name:  "read",
-				Usage: "read a single account",
+				Name:    "read",
+				Usage:   "read a single account",
+				Aliases: []string{"r"},
 				Flags: []cli.Flag{
 					&cli.StringFlag{
 						Name:     "id",

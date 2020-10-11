@@ -13,36 +13,44 @@ type efakturas interface {
 
 func getEfakturasCommand(conn efakturas) *cli.Command {
 	return &cli.Command{
-		Name:  "efakturas",
-		Usage: "interact with efakturas",
+		Name:    "efakturas",
+		Usage:   "interact with efakturas",
+		Aliases: []string{"e"},
 		Subcommands: []*cli.Command{
 			{
-				Name:  "list",
-				Usage: "list all efakturas",
+				Name:    "list",
+				Usage:   "list all efakturas",
+				Aliases: []string{"l"},
 				Flags: []cli.Flag{
 					&cli.BoolFlag{
-						Name:  "new",
-						Usage: "list only new efakturas",
+						Name:    "new",
+						Usage:   "list only new efakturas",
+						Aliases: []string{"n"},
 					},
 					&cli.StringFlag{
-						Name:  "start-date",
-						Usage: "start date to filter on (YYYY-MM-DD)",
+						Name:    "start-date",
+						Usage:   "start date to filter on (YYYY-MM-DD)",
+						Aliases: []string{"sd"},
 					},
 					&cli.StringFlag{
-						Name:  "end-date",
-						Usage: "end date to filter on (YYYY-MM-DD)",
+						Name:    "end-date",
+						Usage:   "end date to filter on (YYYY-MM-DD)",
+						Aliases: []string{"ed"},
 					},
 					&cli.StringFlag{
-						Name:  "status",
-						Usage: "status to filter on",
+						Name:    "status",
+						Usage:   "status to filter on",
+						Aliases: []string{"s"},
 					},
 					&cli.StringFlag{
-						Name:  "index",
-						Usage: "index to filter on",
+						Name:    "index",
+						Usage:   "index to filter on",
+						Aliases: []string{"i"},
 					},
 					&cli.StringFlag{
-						Name:  "length",
-						Usage: "length to filter on",
+						Name:    "length",
+						Usage:   "length to filter on",
+						Aliases: []string{"l"},
 					},
 				},
 				Action: func(c *cli.Context) error {
@@ -56,8 +64,9 @@ func getEfakturasCommand(conn efakturas) *cli.Command {
 				},
 			},
 			{
-				Name:  "pay",
-				Usage: "pay efaktura",
+				Name:    "pay",
+				Usage:   "pay efaktura",
+				Aliases: []string{"p"},
 				Flags: []cli.Flag{
 					&cli.StringFlag{
 						Name:     "id",
@@ -67,18 +76,21 @@ func getEfakturasCommand(conn efakturas) *cli.Command {
 					&cli.StringFlag{
 						Name:     "account-id",
 						Usage:    "account id to pay from",
+						Aliases:  []string{"aid"},
 						Required: true,
 					},
 					&cli.BoolFlag{
-						Name:  "pay-minimum",
-						Usage: "pay only minimum",
+						Name:    "pay-minimum",
+						Usage:   "pay only minimum",
+						Aliases: []string{"m"},
 					},
 				},
 				Action: conn.PayEfaktura,
 			},
 			{
-				Name:  "read",
-				Usage: "read a single efaktura",
+				Name:    "read",
+				Usage:   "read a single efaktura",
+				Aliases: []string{"r"},
 				Flags: []cli.Flag{
 					&cli.StringFlag{
 						Name:     "id",
