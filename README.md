@@ -12,7 +12,7 @@ TODO
 
 ## Required configuration
 
-The interact with Sbanken you must provide a client ID, client secret and customer ID. See link under [Prerequisites](https://sbanken.no/bruke/utviklerportalen/) on how to obtain the client ID and client secret. The customer ID is you social security number.
+The interact with Sbanken you must provide a client ID, client secret and customer ID. See link under [Prerequisites](https://sbanken.no/bruke/utviklerportalen/) on how to obtain the client ID and client secret. The customer ID is your social security number.
 
 There are three ways to pass these values to `sbanken`:
 
@@ -37,7 +37,6 @@ customer-id: "my-customer-id"
 ## Usage
 
 ```
-$ sbanken --help
 NAME:
    sbanken - interact with sbanken through the command line
 
@@ -48,20 +47,20 @@ VERSION:
    1.0.0
 
 COMMANDS:
-   accounts        interact with accounts
-   cards           interact with cards
-   efakturas       interact with efakturas
-   payments        interact with payments
-   standingorders  interact with standing orders
-   transactions    interact with transactions
-   transfers       interact with transfers
-   help, h         Shows a list of commands or help for one command
+   accounts, a        interact with accounts
+   cards, c           interact with cards
+   efakturas, e       interact with efakturas
+   payments, p        interact with payments
+   standingorders, s  interact with standing orders
+   transactions, ta   interact with transactions
+   transfers, tf      interact with transfers
+   help, h            Shows a list of commands or help for one command
 
 GLOBAL OPTIONS:
-   --client-id value      the client id [$SBANKEN_CLIENT_ID]
-   --client-secret value  the client secret [$SBANKEN_CLIENT_SECRET]
-   --customer-id value    customer id [$SBANKEN_CUSTOMER_ID]
-   --config value         path to YAML config
-   --help, -h             show help (default: false)
-   --version, -v          print the version (default: false)
+   --client-id value, --clid value    the client id [$SBANKEN_CLIENT_ID]
+   --client-secret value, -s value    the client secret [$SBANKEN_CLIENT_SECRET]
+   --customer-id value, --cuid value  customer id [$SBANKEN_CUSTOMER_ID]
+   --config value, -c value           path to YAML config
+   --help, -h                         show help (default: false)
+   --version, -v                      print the version (default: false)
 ```
