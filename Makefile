@@ -6,7 +6,7 @@ VERSION=1.0.0
 
 ## build: build binaries and generate checksums
 build:
-	mkdir -p dist/${VERSION}
+	mkdir dist/${VERSION}
 	GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -a -ldflags '-s' -installsuffix cgo -o ${APP} cmd/sbanken/main.go
 	tar -czvf ${APP}_${VERSION}_linux_amd64.tar.gz ${APP}
 	GOOS=darwin GOARCH=amd64 CGO_ENABLED=0 go build -a -ldflags '-s' -installsuffix cgo -o ${APP} cmd/sbanken/main.go
@@ -20,7 +20,7 @@ build:
 	mv ${APP}_${VERSION}_darwin_amd64.tar.gz dist/${VERSION}/
 	mv ${APP}_${VERSION}_windows_amd64.tar.gz dist/${VERSION}/
 	mv ${APP}_${VERSION}_checksums.txt dist/${VERSION}/
-	rm sbanken sbanken.exe
+	rm ${APP} ${APP}.exe
 
 .PHONY: run
 ## run: Run dissic (set CONFIG=path/to/config.yaml)
