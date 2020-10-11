@@ -23,7 +23,7 @@ build:
 	rm ${APP} ${APP}.exe
 
 .PHONY: run
-## run: Run dissic (set CONFIG=path/to/config.yaml)
+## run: Run sbanken (set SBANKEN_CONFIG=path/to/config.yaml)
 run:
 	go run -race cmd/sbanken/main.go --config=$(SBANKEN_CONFIG)
 
