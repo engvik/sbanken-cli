@@ -11,12 +11,6 @@ type Connection struct {
 	Client *sbanken.Client
 }
 
-type Config struct {
-	ClientID     string
-	ClientSecret string
-	CustomerID   string
-}
-
 func NewEmptyConnection() *Connection {
 	return &Connection{}
 }
