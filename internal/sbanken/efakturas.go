@@ -1,7 +1,6 @@
 package sbanken
 
 import (
-	"context"
 	"fmt"
 	"os"
 	"time"
@@ -11,19 +10,13 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-func (c *Connection) ListEfakturas(cliCtx *cli.Context) error {
-	ctx := context.Background()
-
-	if err := c.ConnectClient(ctx, cliCtx); err != nil {
-		return err
-	}
-
-	q, err := parseEfakturaListQuery(cliCtx)
+func (c *Connection) ListEfakturas(ctx *cli.Context) error {
+	q, err := parseEfakturaListQuery(ctx)
 	if err != nil {
 		return err
 	}
 
-	efakturas, err := c.Client.ListEfakturas(ctx, q)
+	efakturas, err := c.Client.ListEfakturas(ctx.Context, q)
 	if err != nil {
 		return err
 	}
@@ -33,16 +26,10 @@ func (c *Connection) ListEfakturas(cliCtx *cli.Context) error {
 	return nil
 }
 
-func (c *Connection) PayEfaktura(cliCtx *cli.Context) error {
-	ctx := context.Background()
+func (c *Connection) PayEfaktura(ctx *cli.Context) error {
+	q := parseEfakturaPayQuery(ctx)
 
-	if err := c.ConnectClient(ctx, cliCtx); err != nil {
-		return err
-	}
-
-	q := parseEfakturaPayQuery(cliCtx)
-
-	if err := c.Client.PayEfaktura(ctx, q); err != nil {
+	if err := c.Client.PayEfaktura(ctx.Context, q); err != nil {
 		return err
 	}
 
@@ -51,19 +38,13 @@ func (c *Connection) PayEfaktura(cliCtx *cli.Context) error {
 	return nil
 }
 
-func (c *Connection) ListNewEfakturas(cliCtx *cli.Context) error {
-	ctx := context.Background()
-
-	if err := c.ConnectClient(ctx, cliCtx); err != nil {
-		return err
-	}
-
-	q, err := parseEfakturaListQuery(cliCtx)
+func (c *Connection) ListNewEfakturas(ctx *cli.Context) error {
+	q, err := parseEfakturaListQuery(ctx)
 	if err != nil {
 		return err
 	}
 
-	efakturas, err := c.Client.ListNewEfakturas(ctx, q)
+	efakturas, err := c.Client.ListNewEfakturas(ctx.Context, q)
 	if err != nil {
 		return err
 	}
@@ -73,15 +54,10 @@ func (c *Connection) ListNewEfakturas(cliCtx *cli.Context) error {
 	return nil
 }
 
-func (c *Connection) ReadEfaktura(cliCtx *cli.Context) error {
-	ctx := context.Background()
-	ID := cliCtx.String("id")
+func (c *Connection) ReadEfaktura(ctx *cli.Context) error {
+	ID := ctx.String("id")
 
-	if err := c.ConnectClient(ctx, cliCtx); err != nil {
-		return err
-	}
-
-	efaktura, err := c.Client.ReadEfaktura(ctx, ID)
+	efaktura, err := c.Client.ReadEfaktura(ctx.Context, ID)
 	if err != nil {
 		return err
 	}

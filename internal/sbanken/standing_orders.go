@@ -1,7 +1,6 @@
 package sbanken
 
 import (
-	"context"
 	"fmt"
 	"os"
 	"strings"
@@ -10,17 +9,11 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-func (c *Connection) ListStandingOrders(cliCtx *cli.Context) error {
-	ctx := context.Background()
+func (c *Connection) ListStandingOrders(ctx *cli.Context) error {
+	accountID := ctx.String("id")
+	detailedOutput := ctx.Bool("details")
 
-	if err := c.ConnectClient(ctx, cliCtx); err != nil {
-		return err
-	}
-
-	accountID := cliCtx.String("id")
-	detailedOutput := cliCtx.Bool("details")
-
-	standingOrders, err := c.Client.ListStandingOrders(ctx, accountID)
+	standingOrders, err := c.Client.ListStandingOrders(ctx.Context, accountID)
 	if err != nil {
 		return err
 	}

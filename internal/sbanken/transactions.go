@@ -1,7 +1,6 @@
 package sbanken
 
 import (
-	"context"
 	"fmt"
 	"os"
 	"time"
@@ -11,23 +10,17 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-func (c *Connection) ListTransactions(cliCtx *cli.Context) error {
-	ctx := context.Background()
-
-	if err := c.ConnectClient(ctx, cliCtx); err != nil {
-		return err
-	}
-
-	accountID := cliCtx.String("id")
-	detailedOutput := cliCtx.Bool("details")
-	cardDetails := cliCtx.Bool("card-details")
-	transactionDetails := cliCtx.Bool("transaction-details")
-	q, err := parseTransactionListQuery(cliCtx)
+func (c *Connection) ListTransactions(ctx *cli.Context) error {
+	accountID := ctx.String("id")
+	detailedOutput := ctx.Bool("details")
+	cardDetails := ctx.Bool("card-details")
+	transactionDetails := ctx.Bool("transaction-details")
+	q, err := parseTransactionListQuery(ctx)
 	if err != nil {
 		return err
 	}
 
-	transactions, err := c.Client.ListTransactions(ctx, accountID, q)
+	transactions, err := c.Client.ListTransactions(ctx.Context, accountID, q)
 	if err != nil {
 		return err
 	}

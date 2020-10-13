@@ -1,7 +1,6 @@
 package sbanken
 
 import (
-	"context"
 	"fmt"
 	"os"
 	"strings"
@@ -11,17 +10,11 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-func (c *Connection) ListPayments(cliCtx *cli.Context) error {
-	ctx := context.Background()
+func (c *Connection) ListPayments(ctx *cli.Context) error {
+	accountID := ctx.String("id")
+	q := parsePaymentListQuery(ctx)
 
-	if err := c.ConnectClient(ctx, cliCtx); err != nil {
-		return err
-	}
-
-	accountID := cliCtx.String("id")
-	q := parsePaymentListQuery(cliCtx)
-
-	payments, err := c.Client.ListPayments(ctx, accountID, q)
+	payments, err := c.Client.ListPayments(ctx.Context, accountID, q)
 	if err != nil {
 		return err
 	}
@@ -68,17 +61,11 @@ func (c *Connection) ListPayments(cliCtx *cli.Context) error {
 	return nil
 }
 
-func (c *Connection) ReadPayment(cliCtx *cli.Context) error {
-	ctx := context.Background()
+func (c *Connection) ReadPayment(ctx *cli.Context) error {
+	accountID := ctx.String("account-id")
+	paymentID := ctx.String("id")
 
-	if err := c.ConnectClient(ctx, cliCtx); err != nil {
-		return err
-	}
-
-	accountID := cliCtx.String("account-id")
-	paymentID := cliCtx.String("id")
-
-	payment, err := c.Client.ReadPayment(ctx, accountID, paymentID)
+	payment, err := c.Client.ReadPayment(ctx.Context, accountID, paymentID)
 	if err != nil {
 		return err
 	}

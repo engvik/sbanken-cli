@@ -1,21 +1,14 @@
 package sbanken
 
 import (
-	"context"
 	"os"
 
 	"github.com/jedib0t/go-pretty/v6/table"
 	"github.com/urfave/cli/v2"
 )
 
-func (c *Connection) ListAccounts(cliCtx *cli.Context) error {
-	ctx := context.Background()
-
-	if err := c.ConnectClient(ctx, cliCtx); err != nil {
-		return err
-	}
-
-	accounts, err := c.Client.ListAccounts(ctx)
+func (c *Connection) ListAccounts(ctx *cli.Context) error {
+	accounts, err := c.Client.ListAccounts(ctx.Context)
 	if err != nil {
 		return err
 	}
@@ -43,15 +36,10 @@ func (c *Connection) ListAccounts(cliCtx *cli.Context) error {
 	return nil
 }
 
-func (c *Connection) ReadAccount(cliCtx *cli.Context) error {
-	ctx := context.Background()
-	ID := cliCtx.String("id")
+func (c *Connection) ReadAccount(ctx *cli.Context) error {
+	ID := ctx.String("id")
 
-	if err := c.ConnectClient(ctx, cliCtx); err != nil {
-		return err
-	}
-
-	account, err := c.Client.ReadAccount(ctx, ID)
+	account, err := c.Client.ReadAccount(ctx.Context, ID)
 	if err != nil {
 		return err
 	}

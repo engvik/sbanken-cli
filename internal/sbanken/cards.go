@@ -1,21 +1,14 @@
 package sbanken
 
 import (
-	"context"
 	"os"
 
 	"github.com/jedib0t/go-pretty/v6/table"
 	"github.com/urfave/cli/v2"
 )
 
-func (c *Connection) ListCards(cliCtx *cli.Context) error {
-	ctx := context.Background()
-
-	if err := c.ConnectClient(ctx, cliCtx); err != nil {
-		return err
-	}
-
-	cards, err := c.Client.ListCards(ctx)
+func (c *Connection) ListCards(ctx *cli.Context) error {
+	cards, err := c.Client.ListCards(ctx.Context)
 	if err != nil {
 		return err
 	}
