@@ -8,7 +8,6 @@ import (
 
 type testClient struct{}
 
-func (c testClient) ListCards(context.Context) ([]sbanken.Card, error) { return nil, nil }
 func (c testClient) ListEfakturas(context.Context, *sbanken.EfakturaListQuery) ([]sbanken.Efaktura, error) {
 	return nil, nil
 }

@@ -1,8 +1,6 @@
 package sbanken
 
 import (
-	"os"
-
 	"github.com/jedib0t/go-pretty/v6/table"
 	"github.com/urfave/cli/v2"
 )
@@ -14,7 +12,7 @@ func (c *Connection) ListCards(ctx *cli.Context) error {
 	}
 
 	t := table.NewWriter()
-	t.SetOutputMirror(os.Stdout)
+	t.SetOutputMirror(c.output)
 	t.AppendHeader(table.Row{"ID", "Type", "Product Code", "Number", "Account Number", "ExpiryDate", "Status", "Version Number"})
 
 	var rows []table.Row
