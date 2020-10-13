@@ -2,12 +2,14 @@ package sbanken
 
 import (
 	"context"
+	"io"
+	"os"
 
 	"github.com/engvik/sbanken-go"
 	"github.com/urfave/cli/v2"
 )
 
-type sbankenConn interface {
+type sbankenClient interface {
 	ListAccounts(context.Context) ([]sbanken.Account, error)
 	ReadAccount(context.Context, string) (sbanken.Account, error)
 	ListCards(context.Context) ([]sbanken.Card, error)
@@ -23,11 +25,14 @@ type sbankenConn interface {
 }
 
 type Connection struct {
-	Client sbankenConn
+	Client sbankenClient
+	output io.Writer
 }
 
 func NewEmptyConnection() *Connection {
-	return &Connection{}
+	return &Connection{
+		output: os.Stdout,
+	}
 }
 
 func (c *Connection) ConnectClient(ctx context.Context, cliCtx *cli.Context) error {
