@@ -8,7 +8,4 @@ import (
 
 type testClient struct{}
 
-func (c testClient) ListTransactions(context.Context, string, *sbanken.TransactionListQuery) ([]sbanken.Transaction, error) {
-	return nil, nil
-}
 func (c testClient) Transfer(context.Context, *sbanken.TransferQuery) error { return nil }
