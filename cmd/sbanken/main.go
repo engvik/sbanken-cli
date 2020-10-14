@@ -9,6 +9,7 @@ import (
 	"github.com/engvik/sbanken-cli/internal/sbanken"
 )
 
+// VERSION is the current sbanken-cli version
 const VERSION string = "1.0.0"
 
 func main() {
