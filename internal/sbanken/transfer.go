@@ -1,30 +1,23 @@
 package sbanken
 
 import (
-	"context"
 	"fmt"
 
 	"github.com/engvik/sbanken-go"
 	"github.com/urfave/cli/v2"
 )
 
-func (c *Connection) Transfer(cliCtx *cli.Context) error {
-	ctx := context.Background()
+func (c *Connection) Transfer(ctx *cli.Context) error {
+	q := parseTransferQuery(ctx)
 
-	if err := c.ConnectClient(ctx, cliCtx); err != nil {
-		return err
-	}
-
-	q := parseTransferQuery(cliCtx)
-
-	if err := c.Client.Transfer(ctx, q); err != nil {
+	if err := c.Client.Transfer(ctx.Context, q); err != nil {
 		return err
 	}
 
 	if q.Message != "" {
-		fmt.Printf("%f successfully transfered from %s to %s: %s\n", q.Amount, q.FromAccountID, q.ToAccountID, q.Message)
+		fmt.Fprintf(c.output, "%f successfully transfered from %s to %s: %s\n", q.Amount, q.FromAccountID, q.ToAccountID, q.Message)
 	} else {
-		fmt.Printf("%f successfully transfered from %s to %s\n", q.Amount, q.FromAccountID, q.ToAccountID)
+		fmt.Fprintf(c.output, "%f successfully transfered from %s to %s\n", q.Amount, q.FromAccountID, q.ToAccountID)
 	}
 
 	return nil

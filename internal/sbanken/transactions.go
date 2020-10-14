@@ -1,9 +1,8 @@
 package sbanken
 
 import (
-	"context"
 	"fmt"
-	"os"
+	"io"
 	"time"
 
 	"github.com/engvik/sbanken-go"
@@ -11,29 +10,23 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-func (c *Connection) ListTransactions(cliCtx *cli.Context) error {
-	ctx := context.Background()
-
-	if err := c.ConnectClient(ctx, cliCtx); err != nil {
-		return err
-	}
-
-	accountID := cliCtx.String("id")
-	detailedOutput := cliCtx.Bool("details")
-	cardDetails := cliCtx.Bool("card-details")
-	transactionDetails := cliCtx.Bool("transaction-details")
-	q, err := parseTransactionListQuery(cliCtx)
+func (c *Connection) ListTransactions(ctx *cli.Context) error {
+	accountID := ctx.String("id")
+	detailedOutput := ctx.Bool("details")
+	cardDetails := ctx.Bool("card-details")
+	transactionDetails := ctx.Bool("transaction-details")
+	q, err := parseTransactionListQuery(ctx)
 	if err != nil {
 		return err
 	}
 
-	transactions, err := c.Client.ListTransactions(ctx, accountID, q)
+	transactions, err := c.Client.ListTransactions(ctx.Context, accountID, q)
 	if err != nil {
 		return err
 	}
 
 	t := table.NewWriter()
-	t.SetOutputMirror(os.Stdout)
+	t.SetOutputMirror(c.output)
 	t.AppendHeader(table.Row{
 		"Index",
 		"Text",
@@ -66,24 +59,24 @@ func (c *Connection) ListTransactions(cliCtx *cli.Context) error {
 	t.Render()
 
 	if detailedOutput {
-		printDetails(transactions)
+		printDetails(transactions, c.output)
 	}
 
 	if cardDetails {
-		printCardDetails(transactions)
+		printCardDetails(transactions, c.output)
 	}
 
 	if transactionDetails {
-		printTransactionDetails(transactions)
+		printTransactionDetails(transactions, c.output)
 	}
 
 	if !detailedOutput && !cardDetails && !transactionDetails {
-		fmt.Println()
-		fmt.Println("To see detailed output, use: sbanken transactions list --id=<ID> --details")
-		fmt.Println("Detailed fields includes: Other Account Number, Transaction Type Text, Transaction Type Code, Reservation Type, Source")
-		fmt.Println()
-		fmt.Println("Some transaction contains card details, to list them use: sbanken transactions list --id=<ID> --card-details")
-		fmt.Println("Some transaction has more transaction details, to list them use: sbanken transactions list --id=<ID> --transaction-details")
+		fmt.Fprintln(c.output)
+		fmt.Fprintln(c.output, "To see detailed output, use: sbanken transactions list --id=<ID> --details")
+		fmt.Fprintln(c.output, "Detailed fields includes: Other Account Number, Transaction Type Text, Transaction Type Code, Reservation Type, Source")
+		fmt.Fprintln(c.output)
+		fmt.Fprintln(c.output, "Some transactions contains card details, to list them use: sbanken transactions list --id=<ID> --card-details")
+		fmt.Fprintln(c.output, "Some transactions has more transaction details, to list them use: sbanken transactions list --id=<ID> --transaction-details")
 	}
 
 	return nil
@@ -124,9 +117,9 @@ func parseTransactionListQuery(ctx *cli.Context) (*sbanken.TransactionListQuery,
 	return q, nil
 }
 
-func printDetails(transactions []sbanken.Transaction) {
+func printDetails(transactions []sbanken.Transaction, output io.Writer) {
 	td := table.NewWriter()
-	td.SetOutputMirror(os.Stdout)
+	td.SetOutputMirror(output)
 	td.AppendHeader(table.Row{
 		"Index",
 		"Other Account Number",
@@ -152,9 +145,9 @@ func printDetails(transactions []sbanken.Transaction) {
 	td.Render()
 }
 
-func printCardDetails(transactions []sbanken.Transaction) {
+func printCardDetails(transactions []sbanken.Transaction, output io.Writer) {
 	td := table.NewWriter()
-	td.SetOutputMirror(os.Stdout)
+	td.SetOutputMirror(output)
 	td.AppendHeader(table.Row{
 		"Index",
 		"Merchant Category Code",
@@ -190,9 +183,9 @@ func printCardDetails(transactions []sbanken.Transaction) {
 	td.Render()
 }
 
-func printTransactionDetails(transactions []sbanken.Transaction) {
+func printTransactionDetails(transactions []sbanken.Transaction, output io.Writer) {
 	td := table.NewWriter()
-	td.SetOutputMirror(os.Stdout)
+	td.SetOutputMirror(output)
 	td.AppendHeader(table.Row{
 		"Index",
 		"ID",

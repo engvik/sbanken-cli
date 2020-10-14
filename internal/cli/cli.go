@@ -49,6 +49,10 @@ func New(ctx context.Context, conn sbankenConn, version string) *cli.App {
 				}
 			}
 
+			if err := conn.ConnectClient(ctx, c); err != nil {
+				return err
+			}
+
 			return nil
 		},
 		Flags: flags,
