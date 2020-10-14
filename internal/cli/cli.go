@@ -24,6 +24,7 @@ type sbankenConn interface {
 	Transfer(*cli.Context) error
 }
 
+// New creates a new cli app.
 func New(ctx context.Context, conn sbankenConn, version string) *cli.App {
 	flags := getGlobalFlags()
 
