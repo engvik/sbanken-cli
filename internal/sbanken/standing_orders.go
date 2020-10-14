@@ -2,7 +2,6 @@ package sbanken
 
 import (
 	"fmt"
-	"os"
 	"strings"
 
 	"github.com/jedib0t/go-pretty/v6/table"
@@ -19,7 +18,7 @@ func (c *Connection) ListStandingOrders(ctx *cli.Context) error {
 	}
 
 	t := table.NewWriter()
-	t.SetOutputMirror(os.Stdout)
+	t.SetOutputMirror(c.output)
 	t.AppendHeader(table.Row{
 		"Standing Order ID",
 		"Credit Account Number",
@@ -53,7 +52,7 @@ func (c *Connection) ListStandingOrders(ctx *cli.Context) error {
 
 	if detailedOutput {
 		td := table.NewWriter()
-		td.SetOutputMirror(os.Stdout)
+		td.SetOutputMirror(c.output)
 		td.AppendHeader(table.Row{
 			"Standing Order ID",
 			"CID",
@@ -80,9 +79,9 @@ func (c *Connection) ListStandingOrders(ctx *cli.Context) error {
 		td.AppendRows(rows)
 		td.Render()
 	} else {
-		fmt.Println()
-		fmt.Println("To see detailed output, use: sbanken standingorders list --id=<ID> --details")
-		fmt.Println("Detailed fields includes: CID, Beneficiary Name, Standing Order Start Date, Standing Order End Date, Standing Order Type, Free Terms")
+		fmt.Fprintln(c.output)
+		fmt.Fprintln(c.output, "To see detailed output, use: sbanken standingorders list --id=<ID> --details")
+		fmt.Fprintln(c.output, "Detailed fields includes: CID, Beneficiary Name, Standing Order Start Date, Standing Order End Date, Standing Order Type, Free Terms")
 	}
 
 	return nil
