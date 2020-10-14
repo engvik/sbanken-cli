@@ -15,9 +15,9 @@ func (c *Connection) Transfer(ctx *cli.Context) error {
 	}
 
 	if q.Message != "" {
-		fmt.Fprintf(c.output, "%f successfully transfered from %s to %s: %s\n", q.Amount, q.FromAccountID, q.ToAccountID, q.Message)
+		fmt.Fprintf(c.output, "%f successfully transferred from %s to %s: %s\n", q.Amount, q.FromAccountID, q.ToAccountID, q.Message)
 	} else {
-		fmt.Fprintf(c.output, "%f successfully transfered from %s to %s\n", q.Amount, q.FromAccountID, q.ToAccountID)
+		fmt.Fprintf(c.output, "%f successfully transferred from %s to %s\n", q.Amount, q.FromAccountID, q.ToAccountID)
 	}
 
 	return nil

@@ -33,7 +33,7 @@ func TestTransfer(t *testing.T) {
 				fs.Int("amount", 1337, "")
 				return fs
 			}(),
-			exp: `1337.000000 successfully transfered from test-from-account-id to test-to-account-id
+			exp: `1337.000000 successfully transferred from test-from-account-id to test-to-account-id
 `,
 		},
 		{
@@ -46,7 +46,7 @@ func TestTransfer(t *testing.T) {
 				fs.Int("amount", 1337, "")
 				return fs
 			}(),
-			exp: `1337.000000 successfully transfered from test-from-account-id to test-to-account-id: $$$
+			exp: `1337.000000 successfully transferred from test-from-account-id to test-to-account-id: $$$
 `,
 		},
 	}

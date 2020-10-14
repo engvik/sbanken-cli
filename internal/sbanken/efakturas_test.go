@@ -111,7 +111,7 @@ func TestPayEfaktura(t *testing.T) {
 		t.Errorf("error running test: %v", err)
 	}
 
-	exp := []byte(`Efaktura test-id payed successfully with account test-account-id
+	exp := []byte(`Efaktura test-id paid successfully with account test-account-id
 `)
 	got := buf.Bytes()
 

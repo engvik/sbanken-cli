@@ -33,7 +33,7 @@ func (c *Connection) PayEfaktura(ctx *cli.Context) error {
 		return err
 	}
 
-	fmt.Fprintf(c.output, "Efaktura %s payed successfully with account %s\n", q.ID, q.AccountID)
+	fmt.Fprintf(c.output, "Efaktura %s paid successfully with account %s\n", q.ID, q.AccountID)
 
 	return nil
 }
