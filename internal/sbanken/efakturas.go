@@ -2,7 +2,7 @@ package sbanken
 
 import (
 	"fmt"
-	"os"
+	"io"
 	"time"
 
 	"github.com/engvik/sbanken-go"
@@ -21,7 +21,7 @@ func (c *Connection) ListEfakturas(ctx *cli.Context) error {
 		return err
 	}
 
-	printEfakturas(efakturas)
+	printEfakturas(efakturas, c.output)
 
 	return nil
 }
@@ -33,7 +33,7 @@ func (c *Connection) PayEfaktura(ctx *cli.Context) error {
 		return err
 	}
 
-	fmt.Printf("Efaktura %s payed successfully with account %s\n", q.ID, q.AccountID)
+	fmt.Fprintf(c.output, "Efaktura %s payed successfully with account %s\n", q.ID, q.AccountID)
 
 	return nil
 }
@@ -49,7 +49,7 @@ func (c *Connection) ListNewEfakturas(ctx *cli.Context) error {
 		return err
 	}
 
-	printEfakturas(efakturas)
+	printEfakturas(efakturas, c.output)
 
 	return nil
 }
@@ -63,7 +63,7 @@ func (c *Connection) ReadEfaktura(ctx *cli.Context) error {
 	}
 
 	t := table.NewWriter()
-	t.SetOutputMirror(os.Stdout)
+	t.SetOutputMirror(c.output)
 	t.AppendRow(table.Row{"ID", efaktura.ID})
 	t.AppendRow(table.Row{"Issuer ID", efaktura.IssuerID})
 	t.AppendRow(table.Row{"Issuer Name", efaktura.IssuerName})
@@ -84,9 +84,9 @@ func (c *Connection) ReadEfaktura(ctx *cli.Context) error {
 	return nil
 }
 
-func printEfakturas(efakturas []sbanken.Efaktura) {
+func printEfakturas(efakturas []sbanken.Efaktura, output io.Writer) {
 	t := table.NewWriter()
-	t.SetOutputMirror(os.Stdout)
+	t.SetOutputMirror(output)
 	t.AppendHeader(table.Row{
 		"ID",
 		"Issuer Name",
@@ -133,9 +133,9 @@ func printEfakturas(efakturas []sbanken.Efaktura) {
 	})
 	t.Render()
 
-	fmt.Println()
-	fmt.Println("To see all fields, use: sbanken efakturas read --id=<ID>")
-	fmt.Println("Detailed fields includes: Issuer ID, Reference, Update Due Date, Updated Amount, Credit Account Number")
+	fmt.Fprintln(output)
+	fmt.Fprintln(output, "To see all fields, use: sbanken efakturas read --id=<ID>")
+	fmt.Fprintln(output, "Detailed fields includes: Issuer ID, Reference, Update Due Date, Updated Amount, Credit Account Number")
 }
 
 func parseEfakturaListQuery(ctx *cli.Context) (*sbanken.EfakturaListQuery, error) {

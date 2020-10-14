@@ -8,16 +8,6 @@ import (
 
 type testClient struct{}
 
-func (c testClient) ListEfakturas(context.Context, *sbanken.EfakturaListQuery) ([]sbanken.Efaktura, error) {
-	return nil, nil
-}
-func (c testClient) PayEfaktura(context.Context, *sbanken.EfakturaPayQuery) error { return nil }
-func (c testClient) ListNewEfakturas(context.Context, *sbanken.EfakturaListQuery) ([]sbanken.Efaktura, error) {
-	return nil, nil
-}
-func (c testClient) ReadEfaktura(context.Context, string) (sbanken.Efaktura, error) {
-	return sbanken.Efaktura{}, nil
-}
 func (c testClient) ListPayments(context.Context, string, *sbanken.PaymentListQuery) ([]sbanken.Payment, error) {
 	return nil, nil
 }
