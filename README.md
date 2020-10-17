@@ -3,7 +3,7 @@
 `sbanken` provides an easy way to interact with your bank from the terminal
 
 ```
-$ ./sbanken -c ~/.config/sbanken/config.yaml accounts list
+$ sbanken -c ~/.config/sbanken/config.yaml accounts list
 +----------------------------------+--------------------+-----------------------------+-------------+----------+-----------+--------------+
 | ID                               | TYPE               | NAME                        | NUMBER      |  BALANCE | AVAILABLE | CREDIT LIMIT |
 +----------------------------------+--------------------+-----------------------------+-------------+----------+-----------+--------------+
@@ -20,7 +20,8 @@ $ ./sbanken -c ~/.config/sbanken/config.yaml accounts list
 
 ## Installation
 
-TODO
+1. Download the [latest release](https://github.com/engvik/sbanken-cli)releases)
+2. Extract the executable binary.
 
 ## Required configuration
 
