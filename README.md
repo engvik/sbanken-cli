@@ -20,7 +20,7 @@ $ sbanken -c ~/.config/sbanken/config.yaml accounts list
 
 ## Installation
 
-1. Download the [latest release](https://github.com/engvik/sbanken-cli)releases)
+1. Download the [latest release](https://github.com/engvik/sbanken-cli/releases)
 2. Extract the executable binary.
 
 ## Required configuration
