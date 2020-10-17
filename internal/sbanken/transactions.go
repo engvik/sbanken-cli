@@ -10,6 +10,7 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
+// ListTransactions handles the list transactions command.
 func (c *Connection) ListTransactions(ctx *cli.Context) error {
 	accountID := ctx.String("id")
 	detailedOutput := ctx.Bool("details")
@@ -141,6 +142,7 @@ func printDetails(transactions []sbanken.Transaction, output io.Writer) {
 			tr.Source,
 		})
 	}
+
 	td.AppendRows(rows)
 	td.Render()
 }
@@ -179,6 +181,7 @@ func printCardDetails(transactions []sbanken.Transaction, output io.Writer) {
 			})
 		}
 	}
+
 	td.AppendRows(rows)
 	td.Render()
 }

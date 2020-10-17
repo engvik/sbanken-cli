@@ -10,6 +10,7 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
+// ListEfakturas handles the efakturas list command.
 func (c *Connection) ListEfakturas(ctx *cli.Context) error {
 	q, err := parseEfakturaListQuery(ctx)
 	if err != nil {
@@ -26,6 +27,7 @@ func (c *Connection) ListEfakturas(ctx *cli.Context) error {
 	return nil
 }
 
+// PayEfaktura handles the efakturas pay command.
 func (c *Connection) PayEfaktura(ctx *cli.Context) error {
 	q := parseEfakturaPayQuery(ctx)
 
@@ -38,6 +40,7 @@ func (c *Connection) PayEfaktura(ctx *cli.Context) error {
 	return nil
 }
 
+// ListNewEfakturas handles the efakturas list command with the --new option set.
 func (c *Connection) ListNewEfakturas(ctx *cli.Context) error {
 	q, err := parseEfakturaListQuery(ctx)
 	if err != nil {
@@ -54,6 +57,7 @@ func (c *Connection) ListNewEfakturas(ctx *cli.Context) error {
 	return nil
 }
 
+// ReadEfaktura handles the read efakturas command.
 func (c *Connection) ReadEfaktura(ctx *cli.Context) error {
 	ID := ctx.String("id")
 
