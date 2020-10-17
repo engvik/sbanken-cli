@@ -7,6 +7,7 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
+// Transfer handles the transfer command.
 func (c *Connection) Transfer(ctx *cli.Context) error {
 	q := parseTransferQuery(ctx)
 

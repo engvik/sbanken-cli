@@ -24,17 +24,20 @@ type sbankenClient interface {
 	Transfer(context.Context, *sbanken.TransferQuery) error
 }
 
+// Connection holds the sbanken client.
 type Connection struct {
 	Client sbankenClient
 	output io.Writer
 }
 
+// NewEmptyConnection returns a new connection without a connected client.
 func NewEmptyConnection() *Connection {
 	return &Connection{
 		output: os.Stdout,
 	}
 }
 
+// ConnectClient sets up a connection to the sbanken client.
 func (c *Connection) ConnectClient(ctx context.Context, cliCtx *cli.Context) error {
 	cfg := &sbanken.Config{
 		ClientID:     cliCtx.String("client-id"),

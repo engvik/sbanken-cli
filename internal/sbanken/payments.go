@@ -9,6 +9,7 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
+// ListPayments handles the payments list command.
 func (c *Connection) ListPayments(ctx *cli.Context) error {
 	accountID := ctx.String("id")
 	q := parsePaymentListQuery(ctx)
@@ -60,6 +61,7 @@ func (c *Connection) ListPayments(ctx *cli.Context) error {
 	return nil
 }
 
+// ReadPayment handles the payments read command.
 func (c *Connection) ReadPayment(ctx *cli.Context) error {
 	accountID := ctx.String("account-id")
 	paymentID := ctx.String("id")
