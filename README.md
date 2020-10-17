@@ -1,6 +1,6 @@
 # sbanken-cli
 
-![tests](https://github.com/engvik/sbanken-cli/workflows/master/badge.svg)
+![tests](https://github.com/engvik/sbanken-cli/workflows/main/badge.svg)
 [![Go Report Card](https://goreportcard.com/badge/github.com/engvik/sbanken-cli)](https://goreportcard.com/report/github.com/engvik/sbanken-cli)
 
 `sbanken` provides an easy way to interact with your bank from the terminal
