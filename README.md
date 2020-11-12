@@ -40,6 +40,14 @@ client-secret: "my-client-secret"
 customer-id: "my-customer-id"
 ```
 
+| **OS**  | **Default config locations**                            |
+|---------|---------------------------------------------------------|
+| linux   | `$HOME/.config/sbanken/config.yaml`                     |
+| darwin  | `$HOME/Library/Application Support/sbanken/config.yaml` |
+| windows | `%APPDATA%\sbanken\config.yaml`                         |
+
+You can also specifig the config path:
+
 `sbanken --config ~/.config/sbanken/config.yaml accounts list`
 
 or 
