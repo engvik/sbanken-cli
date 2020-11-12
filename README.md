@@ -6,7 +6,7 @@
 `sbanken` provides an easy way to interact with your bank from the terminal
 
 ```
-$ sbanken -c ~/.config/sbanken/config.yaml accounts list
+$ sbanken accounts list
 +----------------------------------+--------------------+-----------------------------+-------------+----------+-----------+--------------+
 | ID                               | TYPE               | NAME                        | NUMBER      |  BALANCE | AVAILABLE | CREDIT LIMIT |
 +----------------------------------+--------------------+-----------------------------+-------------+----------+-----------+--------------+
