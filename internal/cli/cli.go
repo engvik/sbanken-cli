@@ -3,6 +3,9 @@ package cli
 import (
 	"context"
 	"errors"
+	"fmt"
+	"os"
+	"runtime"
 
 	"github.com/urfave/cli/v2"
 	"github.com/urfave/cli/v2/altsrc"
@@ -33,10 +36,27 @@ func New(ctx context.Context, conn sbankenConn, version string) *cli.App {
 		Usage:   "provides an easy way to interact with your bank from the terminal",
 		Version: version,
 		Before: func(c *cli.Context) error {
-			loadConfigFunc := altsrc.InitInputSourceWithContext(flags, altsrc.NewYamlSourceFromFlagFunc("config"))
-			err := loadConfigFunc(c)
+			configPath := c.String("config")
 
-			if err != nil {
+			if configPath == "" {
+				switch runtime.GOOS {
+				case "linux":
+					configPath = fmt.Sprintf("%s/.config/sbanken/config.yaml", os.Getenv("HOME"))
+				case "darwin":
+					configPath = fmt.Sprintf("%s/Library/Application Support/sbanken/config.yaml", os.Getenv("HOME"))
+				case "windows":
+					configPath = fmt.Sprintf("%s/sbanken/config.yaml", os.Getenv("APPDATA"))
+				}
+			}
+
+			loadConfigFunc := altsrc.InitInputSourceWithContext(
+				flags,
+				func(context *cli.Context) (altsrc.InputSourceContext, error) {
+					return altsrc.NewYamlSourceFromFile(configPath)
+				},
+			)
+
+			if err := loadConfigFunc(c); err != nil {
 				if c.String("client-id") == "" {
 					return errors.New("client-id is a required parameter")
 				}
