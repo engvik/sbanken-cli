@@ -11,7 +11,7 @@ import (
 )
 
 // VERSION is the current sbanken-cli version
-const VERSION string = "1.1.0"
+const VERSION string = "1.2.0"
 
 func main() {
 	ctx := context.Background()
