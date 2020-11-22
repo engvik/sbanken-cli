@@ -16,7 +16,7 @@ func getStandingOrdersCommand(conn standingOrders) *cli.Command {
 		Flags: []cli.Flag{
 			&cli.StringFlag{
 				Name:     "id",
-				Usage:    "account id to list payments from",
+				Usage:    "account id (or name) to list payments from",
 				Required: true,
 			},
 			&cli.BoolFlag{

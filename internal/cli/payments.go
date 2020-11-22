@@ -22,7 +22,7 @@ func getPaymentsCommand(conn payments) *cli.Command {
 				Flags: []cli.Flag{
 					&cli.StringFlag{
 						Name:     "id",
-						Usage:    "account id to list payments from",
+						Usage:    "account id (or name) to list payments from",
 						Required: true,
 					},
 					&cli.StringFlag{
@@ -45,12 +45,12 @@ func getPaymentsCommand(conn payments) *cli.Command {
 				Flags: []cli.Flag{
 					&cli.StringFlag{
 						Name:     "id",
-						Usage:    "payment id",
+						Usage:    "payment id (or text)",
 						Required: true,
 					},
 					&cli.StringFlag{
 						Name:     "account-id",
-						Usage:    "account id",
+						Usage:    "account id (or name)",
 						Aliases:  []string{"aid"},
 						Required: true,
 					},
