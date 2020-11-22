@@ -25,15 +25,15 @@ func getGlobalFlags() []cli.Flag {
 			Aliases: []string{"cuid"},
 			EnvVars: []string{"SBANKEN_CUSTOMER_ID"},
 		}),
+		altsrc.NewStringFlag(&cli.StringFlag{
+			Name:  "style",
+			Usage: "set output style",
+		}),
 		&cli.StringFlag{
 			Name:    "config",
 			Usage:   "path to YAML config",
 			Aliases: []string{"c"},
 			EnvVars: []string{"SBANKEN_CONFIG"},
-		},
-		&cli.StringFlag{
-			Name:  "style",
-			Usage: "set output style",
 		},
 	}
 }
