@@ -50,12 +50,10 @@ func (c testClient) ReadAccount(context.Context, string) (sbanken.Account, error
 }
 
 func TestListAccounts(t *testing.T) {
-	conn := Connection{
-		Client: testClient{},
-	}
+	conn := testNewConnection(t)
 
 	var buf bytes.Buffer
-	conn.output = &buf
+	conn.writer.SetOutputMirror(&buf)
 
 	if err := conn.ListAccounts(&cli.Context{}); err != nil {
 		t.Errorf("error running test: %v", err)
@@ -70,12 +68,10 @@ func TestListAccounts(t *testing.T) {
 }
 
 func TestReadAccount(t *testing.T) {
-	conn := Connection{
-		Client: testClient{},
-	}
+	conn := testNewConnection(t)
 
 	var buf bytes.Buffer
-	conn.output = &buf
+	conn.writer.SetOutputMirror(&buf)
 
 	fs := flag.NewFlagSet("id", flag.ExitOnError)
 	ctx := cli.NewContext(nil, fs, nil)

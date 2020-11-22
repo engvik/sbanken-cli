@@ -92,9 +92,10 @@ func (c testClient) ListTransactions(context.Context, string, *sbanken.Transacti
 }
 
 func TestListTransactions(t *testing.T) {
-	conn := Connection{
-		Client: testClient{},
-	}
+	conn := testNewConnection(t)
+
+	var buf bytes.Buffer
+	conn.writer.SetOutputMirror(&buf)
 
 	tests := []struct {
 		name string
@@ -173,9 +174,6 @@ func TestListTransactions(t *testing.T) {
 
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
-			var buf bytes.Buffer
-			conn.output = &buf
-
 			ctx := cli.NewContext(nil, tc.fs, nil)
 
 			if err := conn.ListTransactions(ctx); err != nil {
@@ -188,6 +186,8 @@ func TestListTransactions(t *testing.T) {
 			if bytes.Compare(got, exp) != 0 {
 				t.Errorf("unexpected bytes: got %s, exp %s", got, exp)
 			}
+
+			buf.Reset()
 		})
 	}
 }

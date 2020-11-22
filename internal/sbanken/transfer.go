@@ -1,8 +1,6 @@
 package sbanken
 
 import (
-	"fmt"
-
 	"github.com/engvik/sbanken-go"
 	"github.com/urfave/cli/v2"
 )
@@ -11,15 +9,11 @@ import (
 func (c *Connection) Transfer(ctx *cli.Context) error {
 	q := parseTransferQuery(ctx)
 
-	if err := c.Client.Transfer(ctx.Context, q); err != nil {
+	if err := c.client.Transfer(ctx.Context, q); err != nil {
 		return err
 	}
 
-	if q.Message != "" {
-		fmt.Fprintf(c.output, "%f successfully transferred from %s to %s: %s\n", q.Amount, q.FromAccountID, q.ToAccountID, q.Message)
-	} else {
-		fmt.Fprintf(c.output, "%f successfully transferred from %s to %s\n", q.Amount, q.FromAccountID, q.ToAccountID)
-	}
+	c.writer.Transfer(q)
 
 	return nil
 }

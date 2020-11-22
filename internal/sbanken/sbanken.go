@@ -24,15 +24,32 @@ type sbankenClient interface {
 	Transfer(context.Context, *sbanken.TransferQuery) error
 }
 
-// Connection holds the sbanken client.
+type tableWriter interface {
+	SetOutputMirror(io.Writer)
+	ListAccounts([]sbanken.Account)
+	ReadAccount(sbanken.Account)
+	ListCards([]sbanken.Card)
+	ListEfakturas([]sbanken.Efaktura)
+	PayEfaktura(*sbanken.EfakturaPayQuery)
+	ReadEfaktura(sbanken.Efaktura)
+	ListPayments([]sbanken.Payment)
+	ReadPayment(sbanken.Payment)
+	ListStandingOrders([]sbanken.StandingOrder, bool)
+	ListTransactions([]sbanken.Transaction, bool, bool, bool)
+	Transfer(*sbanken.TransferQuery)
+}
+
+// Connection holds the sbanken client and the output writer.
 type Connection struct {
-	Client sbankenClient
+	client sbankenClient
+	writer tableWriter
 	output io.Writer
 }
 
 // NewEmptyConnection returns a new connection without a connected client.
-func NewEmptyConnection() *Connection {
+func NewEmptyConnection(tw tableWriter) *Connection {
 	return &Connection{
+		writer: tw,
 		output: os.Stdout,
 	}
 }
@@ -49,7 +66,7 @@ func (c *Connection) ConnectClient(ctx context.Context, cliCtx *cli.Context) err
 		return err
 	}
 
-	c.Client = sClient
+	c.client = sClient
 
 	return nil
 }

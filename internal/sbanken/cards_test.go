@@ -32,12 +32,10 @@ func (c testClient) ListCards(context.Context) ([]sbanken.Card, error) {
 }
 
 func TestListCards(t *testing.T) {
-	conn := Connection{
-		Client: testClient{},
-	}
+	conn := testNewConnection(t)
 
 	var buf bytes.Buffer
-	conn.output = &buf
+	conn.writer.SetOutputMirror(&buf)
 
 	if err := conn.ListCards(&cli.Context{}); err != nil {
 		t.Errorf("error running test: %v", err)
