@@ -27,8 +27,12 @@ type sbankenConn interface {
 	Transfer(*cli.Context) error
 }
 
+type tableWriter interface {
+	SetStyle(string)
+}
+
 // New creates a new cli app.
-func New(ctx context.Context, conn sbankenConn, version string) *cli.App {
+func New(ctx context.Context, conn sbankenConn, tw tableWriter, version string) *cli.App {
 	flags := getGlobalFlags()
 
 	app := &cli.App{
@@ -73,6 +77,8 @@ func New(ctx context.Context, conn sbankenConn, version string) *cli.App {
 			if err := conn.ConnectClient(ctx, c); err != nil {
 				return err
 			}
+
+			tw.SetStyle(c.String("style"))
 
 			return nil
 		},

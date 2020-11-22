@@ -19,7 +19,7 @@ func main() {
 	writer.SetOutputMirror(os.Stdout)
 
 	conn := sbanken.NewEmptyConnection(writer)
-	app := cli.New(ctx, conn, VERSION)
+	app := cli.New(ctx, conn, writer, VERSION)
 
 	if err := app.Run(os.Args); err != nil {
 		log.Fatal(err)

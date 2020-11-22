@@ -31,5 +31,9 @@ func getGlobalFlags() []cli.Flag {
 			Aliases: []string{"c"},
 			EnvVars: []string{"SBANKEN_CONFIG"},
 		},
+		&cli.StringFlag{
+			Name:  "style",
+			Usage: "set output style",
+		},
 	}
 }
