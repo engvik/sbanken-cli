@@ -72,12 +72,10 @@ func (c testClient) ReadEfaktura(context.Context, string) (sbanken.Efaktura, err
 }
 
 func TestListEfakturas(t *testing.T) {
-	conn := Connection{
-		Client: testClient{},
-	}
+	conn := testNewConnection(t)
 
 	var buf bytes.Buffer
-	conn.output = &buf
+	conn.writer.SetOutputMirror(&buf)
 
 	fs := flag.NewFlagSet("start-date", flag.ExitOnError)
 	ctx := cli.NewContext(nil, fs, nil)
@@ -95,12 +93,10 @@ func TestListEfakturas(t *testing.T) {
 }
 
 func TestPayEfaktura(t *testing.T) {
-	conn := Connection{
-		Client: testClient{},
-	}
+	conn := testNewConnection(t)
 
 	var buf bytes.Buffer
-	conn.output = &buf
+	conn.writer.SetOutputMirror(&buf)
 
 	fs := flag.NewFlagSet("efaktura", flag.ExitOnError)
 	fs.String("id", "test-id", "")
@@ -122,12 +118,10 @@ func TestPayEfaktura(t *testing.T) {
 }
 
 func TestListNewEfakturas(t *testing.T) {
-	conn := Connection{
-		Client: testClient{},
-	}
+	conn := testNewConnection(t)
 
 	var buf bytes.Buffer
-	conn.output = &buf
+	conn.writer.SetOutputMirror(&buf)
 
 	fs := flag.NewFlagSet("start-date", flag.ExitOnError)
 	ctx := cli.NewContext(nil, fs, nil)
@@ -145,12 +139,10 @@ func TestListNewEfakturas(t *testing.T) {
 }
 
 func TestReadEfakturas(t *testing.T) {
-	conn := Connection{
-		Client: testClient{},
-	}
+	conn := testNewConnection(t)
 
 	var buf bytes.Buffer
-	conn.output = &buf
+	conn.writer.SetOutputMirror(&buf)
 
 	fs := flag.NewFlagSet("id", flag.ExitOnError)
 	ctx := cli.NewContext(nil, fs, nil)

@@ -7,6 +7,7 @@ import (
 
 	"github.com/engvik/sbanken-cli/internal/cli"
 	"github.com/engvik/sbanken-cli/internal/sbanken"
+	"github.com/engvik/sbanken-cli/internal/table"
 )
 
 // VERSION is the current sbanken-cli version
@@ -14,7 +15,10 @@ const VERSION string = "1.1.0"
 
 func main() {
 	ctx := context.Background()
-	conn := sbanken.NewEmptyConnection()
+	writer := table.NewWriter()
+	writer.SetOutputMirror(os.Stdout)
+
+	conn := sbanken.NewEmptyConnection(writer)
 	app := cli.New(ctx, conn, VERSION)
 
 	if err := app.Run(os.Args); err != nil {

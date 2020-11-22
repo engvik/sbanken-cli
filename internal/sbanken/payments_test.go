@@ -65,12 +65,10 @@ func (c testClient) ReadPayment(context.Context, string, string) (sbanken.Paymen
 }
 
 func TestListPayments(t *testing.T) {
-	conn := Connection{
-		Client: testClient{},
-	}
+	conn := testNewConnection(t)
 
 	var buf bytes.Buffer
-	conn.output = &buf
+	conn.writer.SetOutputMirror(&buf)
 
 	fs := flag.NewFlagSet("id", flag.ExitOnError)
 	ctx := cli.NewContext(nil, fs, nil)
@@ -88,12 +86,10 @@ func TestListPayments(t *testing.T) {
 }
 
 func TestReadPayment(t *testing.T) {
-	conn := Connection{
-		Client: testClient{},
-	}
+	conn := testNewConnection(t)
 
 	var buf bytes.Buffer
-	conn.output = &buf
+	conn.writer.SetOutputMirror(&buf)
 
 	fs := flag.NewFlagSet("id", flag.ExitOnError)
 	ctx := cli.NewContext(nil, fs, nil)
