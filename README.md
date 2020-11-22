@@ -63,11 +63,43 @@ or
 
 `sbanken --client-id="my-client-id" --client-secret="my-client-secret" --customer-id="my-customer-id" accounts list`
 
+## Optional configuration
+
+The following configuration can be set by passing a global option or in the configuration file.
+
+### Output styles
+
+Global option: `style`
+Config field: `style`
+
+Available styles:
+
+```
+"bold"
+"colored-bright"
+"colored-dark"
+"colored-black-on-blue-white"
+"colored-black-on-cyan-white"
+"colored-black-on-green-white"
+"colored-black-on-magenta-white"
+"colored-black-on-yellow-white"
+"colored-black-on-red-white"
+"colored-blue-white-on-black"
+"colored-cyan-white-on-black"
+"colored-green-white-on-black"
+"colored-magenta-white-on-black"
+"colored-red-white-on-black"
+"colored-Yellow-white-on-black"
+"double"
+"light"
+"rounded"
+```
+
 ## Usage
 
 ```
 NAME:
-   sbanken - interact with sbanken through the command line
+   sbanken - provides an easy way to interact with your bank from the terminal
 
 USAGE:
    main [global options] command [command options] [arguments...]
@@ -89,7 +121,8 @@ GLOBAL OPTIONS:
    --client-id value, --clid value    the client id [$SBANKEN_CLIENT_ID]
    --client-secret value, -s value    the client secret [$SBANKEN_CLIENT_SECRET]
    --customer-id value, --cuid value  customer id [$SBANKEN_CUSTOMER_ID]
-   --config value, -c value           path to YAML config
+   --style value                      set output style
+   --config value, -c value           path to YAML config [$SBANKEN_CONFIG]
    --help, -h                         show help (default: false)
    --version, -v                      print the version (default: false)
 ```
