@@ -29,6 +29,10 @@ func getGlobalFlags() []cli.Flag {
 			Name:  "style",
 			Usage: "set output style",
 		}),
+		altsrc.NewBoolFlag(&cli.BoolFlag{
+			Name:  "colors",
+			Usage: "add colors to values",
+		}),
 		&cli.StringFlag{
 			Name:    "config",
 			Usage:   "path to YAML config",

@@ -29,6 +29,7 @@ type sbankenConn interface {
 
 type tableWriter interface {
 	SetStyle(string)
+	SetColors(bool)
 }
 
 // New creates a new cli app.
@@ -79,6 +80,7 @@ func New(ctx context.Context, conn sbankenConn, tw tableWriter, version string) 
 			}
 
 			tw.SetStyle(c.String("style"))
+			tw.SetColors(c.Bool("colors"))
 
 			return nil
 		},
