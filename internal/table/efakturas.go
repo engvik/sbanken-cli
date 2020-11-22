@@ -8,6 +8,10 @@ import (
 )
 
 func (w *Writer) ListEfakturas(efakturas []sbanken.Efaktura) {
+	if w.colors {
+		w.setEfakturasColors()
+	}
+
 	w.table.AppendHeader(table.Row{
 		"ID",
 		"Issuer Name",
@@ -80,4 +84,19 @@ func (w *Writer) ReadEfaktura(efaktura sbanken.Efaktura) {
 	w.table.AppendRow(table.Row{"Credit Account Number", efaktura.CreditAccountNumber})
 
 	w.table.Render()
+}
+
+func (w *Writer) setEfakturasColors() {
+	w.table.SetColumnConfigs([]table.ColumnConfig{
+		{
+			Name:              "Original Amount",
+			Transformer:       w.colorValuesTransformer,
+			TransformerFooter: w.colorValuesTransformer,
+		},
+		{
+			Name:              "Minimum Amount",
+			Transformer:       w.colorValuesTransformer,
+			TransformerFooter: w.colorValuesTransformer,
+		},
+	})
 }

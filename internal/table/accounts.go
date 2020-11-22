@@ -6,6 +6,10 @@ import (
 )
 
 func (w *Writer) ListAccounts(accounts []sbanken.Account) {
+	if w.colors {
+		w.setAccountsColors()
+	}
+
 	w.table.AppendHeader(table.Row{"ID", "Type", "Name", "Number", "Balance", "Available", "Credit Limit"})
 
 	var rows []table.Row
@@ -35,4 +39,24 @@ func (w *Writer) ReadAccount(account sbanken.Account) {
 	w.table.AppendRow(table.Row{"Credit Limit", account.CreditLimit})
 
 	w.table.Render()
+}
+
+func (w *Writer) setAccountsColors() {
+	w.table.SetColumnConfigs([]table.ColumnConfig{
+		{
+			Name:              "Balance",
+			Transformer:       w.colorValuesTransformer,
+			TransformerFooter: w.colorValuesTransformer,
+		},
+		{
+			Name:              "Available",
+			Transformer:       w.colorValuesTransformer,
+			TransformerFooter: w.colorValuesTransformer,
+		},
+		{
+			Name:              "Credit Limit",
+			Transformer:       w.colorValuesTransformer,
+			TransformerFooter: w.colorValuesTransformer,
+		},
+	})
 }

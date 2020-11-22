@@ -8,6 +8,10 @@ import (
 )
 
 func (w *Writer) ListTransactions(transactions []sbanken.Transaction, detailedOutput bool, cardDetails bool, transactionDetails bool) {
+	if w.colors {
+		w.setTransactionsColors()
+	}
+
 	w.table.AppendHeader(table.Row{
 		"Index",
 		"Text",
@@ -170,4 +174,24 @@ func (w *Writer) transactionPrintTransactionDetails(transactions []sbanken.Trans
 
 	w.table.AppendRows(rows)
 	w.table.Render()
+}
+
+func (w *Writer) setTransactionsColors() {
+	w.table.SetColumnConfigs([]table.ColumnConfig{
+		{
+			Name:              "Amount",
+			Transformer:       w.colorValuesTransformer,
+			TransformerFooter: w.colorValuesTransformer,
+		},
+		{
+			Name:              "Currency Amount",
+			Transformer:       w.colorValuesTransformer,
+			TransformerFooter: w.colorValuesTransformer,
+		},
+		{
+			Name:              "Currency Rate",
+			Transformer:       w.colorValuesTransformer,
+			TransformerFooter: w.colorValuesTransformer,
+		},
+	})
 }
