@@ -69,8 +69,8 @@ The following configuration can be set by passing a global option or in the conf
 
 ### Output styles
 
-Global option: `style`
-Config field: `style`
+Global option: `--style value`
+Config field: `style: value`
 
 Available styles:
 
@@ -94,6 +94,11 @@ Available styles:
 "light"
 "rounded"
 ```
+
+### Colors
+
+Global option: `--colors`
+Config field: `colors: true`
 
 ## Usage
 
