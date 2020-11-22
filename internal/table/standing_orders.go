@@ -9,6 +9,10 @@ import (
 )
 
 func (w *Writer) ListStandingOrders(standingOrders []sbanken.StandingOrder, detailedOutput bool) {
+	if w.colors {
+		w.setStandingOrdersColors()
+	}
+
 	w.table.AppendHeader(table.Row{
 		"Standing Order ID",
 		"Credit Account Number",
@@ -74,4 +78,14 @@ func (w *Writer) ListStandingOrders(standingOrders []sbanken.StandingOrder, deta
 		fmt.Fprintln(w.output, "To see detailed output, use: sbanken standingorders list --id=<ID> --details")
 		fmt.Fprintln(w.output, "Detailed fields includes: CID, Beneficiary Name, Standing Order Start Date, Standing Order End Date, Standing Order Type, Free Terms")
 	}
+}
+
+func (w *Writer) setStandingOrdersColors() {
+	w.table.SetColumnConfigs([]table.ColumnConfig{
+		{
+			Name:              "Amount",
+			Transformer:       w.colorValuesTransformer,
+			TransformerFooter: w.colorValuesTransformer,
+		},
+	})
 }

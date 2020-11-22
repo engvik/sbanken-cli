@@ -9,6 +9,10 @@ import (
 )
 
 func (w *Writer) ListPayments(payments []sbanken.Payment) {
+	if w.colors {
+		w.setPaymentsColors()
+	}
+
 	w.table.AppendHeader(table.Row{
 		"ID",
 		"Beneficiary Name",
@@ -63,4 +67,14 @@ func (w *Writer) ReadPayment(payment sbanken.Payment) {
 	w.table.AppendRow(table.Row{"Is Active", payment.IsActive})
 
 	w.table.Render()
+}
+
+func (w *Writer) setPaymentsColors() {
+	w.table.SetColumnConfigs([]table.ColumnConfig{
+		{
+			Name:              "Amount",
+			Transformer:       w.colorValuesTransformer,
+			TransformerFooter: w.colorValuesTransformer,
+		},
+	})
 }

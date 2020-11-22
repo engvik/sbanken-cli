@@ -5,11 +5,14 @@ import (
 	"strings"
 
 	"github.com/jedib0t/go-pretty/v6/table"
+	"github.com/jedib0t/go-pretty/v6/text"
 )
 
 type Writer struct {
-	table  table.Writer
-	output io.Writer
+	table                  table.Writer
+	output                 io.Writer
+	colorValuesTransformer text.Transformer
+	colors                 bool
 }
 
 func NewWriter() *Writer {
@@ -65,4 +68,24 @@ func (w *Writer) SetStyle(style string) {
 	case "rounded":
 		w.table.SetStyle(table.StyleRounded)
 	}
+}
+
+func (w *Writer) SetColors(colors bool) {
+	w.colors = colors
+	w.setColorValuesTranformer()
+}
+
+func (w *Writer) setColorValuesTranformer() {
+	w.colorValuesTransformer = text.Transformer(func(val interface{}) string {
+		value := val.(float32)
+		if value < 0 {
+			return text.Color.Sprint(text.FgRed, val)
+		}
+
+		if value == 0 {
+			return "0"
+		}
+
+		return text.Color.Sprint(text.FgGreen, val)
+	})
 }
