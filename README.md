@@ -46,7 +46,7 @@ customer-id: "my-customer-id"
 | darwin  | `$HOME/Library/Application Support/sbanken/config.yaml` |
 | windows | `%APPDATA%\sbanken\config.yaml`                         |
 
-You can also specifig the config path:
+The config path can also be specified:
 
 `sbanken --config ~/.config/sbanken/config.yaml accounts list`
 
@@ -110,7 +110,7 @@ USAGE:
    main [global options] command [command options] [arguments...]
 
 VERSION:
-   1.1.0
+   1.2.0
 
 COMMANDS:
    accounts, a        list and read accounts
@@ -127,6 +127,7 @@ GLOBAL OPTIONS:
    --client-secret value, -s value    the client secret [$SBANKEN_CLIENT_SECRET]
    --customer-id value, --cuid value  customer id [$SBANKEN_CUSTOMER_ID]
    --style value                      set output style
+   --colors                           add colors to values (default: false)
    --config value, -c value           path to YAML config [$SBANKEN_CONFIG]
    --help, -h                         show help (default: false)
    --version, -v                      print the version (default: false)

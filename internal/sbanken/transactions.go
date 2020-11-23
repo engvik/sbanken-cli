@@ -18,6 +18,14 @@ func (c *Connection) ListTransactions(ctx *cli.Context) error {
 		return err
 	}
 
+	if !c.idRegexp.MatchString(accountID) {
+		var err error
+		accountID, err = c.getAccountID(ctx.Context, accountID)
+		if err != nil {
+			return err
+		}
+	}
+
 	transactions, err := c.client.ListTransactions(ctx.Context, accountID, q)
 	if err != nil {
 		return err

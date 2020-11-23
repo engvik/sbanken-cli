@@ -1,6 +1,9 @@
 package sbanken
 
 import (
+	"fmt"
+	"strings"
+
 	"github.com/engvik/sbanken-go"
 	"github.com/urfave/cli/v2"
 )
@@ -8,6 +11,14 @@ import (
 // ListPayments handles the payments list command.
 func (c *Connection) ListPayments(ctx *cli.Context) error {
 	accountID := ctx.String("id")
+	if !c.idRegexp.MatchString(accountID) {
+		var err error
+		accountID, err = c.getAccountID(ctx.Context, accountID)
+		if err != nil {
+			return err
+		}
+	}
+
 	q := parsePaymentListQuery(ctx)
 
 	payments, err := c.client.ListPayments(ctx.Context, accountID, q)
@@ -18,12 +29,43 @@ func (c *Connection) ListPayments(ctx *cli.Context) error {
 	c.writer.ListPayments(payments)
 
 	return nil
+
 }
 
 // ReadPayment handles the payments read command.
 func (c *Connection) ReadPayment(ctx *cli.Context) error {
 	accountID := ctx.String("account-id")
 	paymentID := ctx.String("id")
+
+	if !c.idRegexp.MatchString(accountID) {
+		var err error
+		accountID, err = c.getAccountID(ctx.Context, accountID)
+		if err != nil {
+			return err
+		}
+	}
+
+	if !c.idRegexp.MatchString(paymentID) {
+		payments, err := c.client.ListPayments(ctx.Context, accountID, nil)
+		if err != nil {
+			return err
+		}
+
+		paymentID = strings.ToLower(paymentID)
+
+		var found bool
+		for _, p := range payments {
+			if strings.ToLower(p.Text) == paymentID {
+				found = true
+				paymentID = p.ID
+				break
+			}
+		}
+
+		if !found {
+			return fmt.Errorf("Unknown ID: %s", paymentID)
+		}
+	}
 
 	payment, err := c.client.ReadPayment(ctx.Context, accountID, paymentID)
 	if err != nil {

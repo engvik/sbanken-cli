@@ -9,6 +9,14 @@ func (c *Connection) ListStandingOrders(ctx *cli.Context) error {
 	accountID := ctx.String("id")
 	detailedOutput := ctx.Bool("details")
 
+	if !c.idRegexp.MatchString(accountID) {
+		var err error
+		accountID, err = c.getAccountID(ctx.Context, accountID)
+		if err != nil {
+			return err
+		}
+	}
+
 	standingOrders, err := c.client.ListStandingOrders(ctx.Context, accountID)
 	if err != nil {
 		return err

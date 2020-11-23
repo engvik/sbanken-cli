@@ -16,13 +16,13 @@ func getTransfersCommand(conn transfer) *cli.Command {
 		Flags: []cli.Flag{
 			&cli.StringFlag{
 				Name:     "to",
-				Usage:    "account id to transfer to",
+				Usage:    "account id (or name) to transfer to",
 				Aliases:  []string{"t"},
 				Required: true,
 			},
 			&cli.StringFlag{
 				Name:     "from",
-				Usage:    "account id to transfer from",
+				Usage:    "account id (or name) to transfer from",
 				Aliases:  []string{"f"},
 				Required: true,
 			},

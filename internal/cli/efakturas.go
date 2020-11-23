@@ -94,7 +94,7 @@ func getEfakturasCommand(conn efakturas) *cli.Command {
 				Flags: []cli.Flag{
 					&cli.StringFlag{
 						Name:     "id",
-						Usage:    "efaktura id to read",
+						Usage:    "efaktura id (or issuer name or kid) to read",
 						Required: true,
 					},
 				},

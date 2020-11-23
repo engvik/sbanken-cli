@@ -31,7 +31,7 @@ func getAccountsCommand(conn accounts) *cli.Command {
 				Flags: []cli.Flag{
 					&cli.StringFlag{
 						Name:     "id",
-						Usage:    "account id to read",
+						Usage:    "account id (or name) to read",
 						Required: true,
 					},
 				},

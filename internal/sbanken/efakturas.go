@@ -1,6 +1,8 @@
 package sbanken
 
 import (
+	"fmt"
+	"strings"
 	"time"
 
 	"github.com/engvik/sbanken-go"
@@ -57,6 +59,27 @@ func (c *Connection) ListNewEfakturas(ctx *cli.Context) error {
 // ReadEfaktura handles the read efakturas command.
 func (c *Connection) ReadEfaktura(ctx *cli.Context) error {
 	ID := ctx.String("id")
+	if !c.idRegexp.MatchString(ID) {
+		efakturas, err := c.client.ListEfakturas(ctx.Context, nil)
+		if err != nil {
+			return err
+		}
+
+		ID = strings.ToLower(ID)
+
+		var found bool
+		for _, e := range efakturas {
+			if strings.ToLower(e.IssuerName) == ID || strings.ToLower(e.KID) == ID {
+				found = true
+				ID = e.ID
+				break
+			}
+		}
+
+		if !found {
+			return fmt.Errorf("Unknown ID: %s", ID)
+		}
+	}
 
 	efaktura, err := c.client.ReadEfaktura(ctx.Context, ID)
 	if err != nil {
