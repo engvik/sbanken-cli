@@ -40,11 +40,11 @@ client-secret: "my-client-secret"
 customer-id: "my-customer-id"
 ```
 
-| **OS**  | **Default config locations**                            |
-|---------|---------------------------------------------------------|
-| linux   | `$HOME/.config/sbanken/config.yaml`                     |
-| darwin  | `$HOME/Library/Application Support/sbanken/config.yaml` |
-| windows | `%APPDATA%\sbanken\config.yaml`                         |
+| **OS**  | **Default config locations**                                                |
+|---------|-----------------------------------------------------------------------------|
+| linux   | `$XDG_CONFIG_HOME/sbanken/config.yaml`, `$HOME/.config/sbanken/config.yaml` |
+| darwin  | `$HOME/Library/Application Support/sbanken/config.yaml`                     |
+| windows | `%APPDATA%\sbanken\config.yaml`                                             |
 
 The config path can also be specified:
 

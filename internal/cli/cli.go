@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"os"
-	"runtime"
 
 	"github.com/urfave/cli/v2"
 	"github.com/urfave/cli/v2/altsrc"
@@ -44,14 +43,12 @@ func New(ctx context.Context, conn sbankenConn, tw tableWriter, version string) 
 			configPath := c.String("config")
 
 			if configPath == "" {
-				switch runtime.GOOS {
-				case "linux":
-					configPath = fmt.Sprintf("%s/.config/sbanken/config.yaml", os.Getenv("HOME"))
-				case "darwin":
-					configPath = fmt.Sprintf("%s/Library/Application Support/sbanken/config.yaml", os.Getenv("HOME"))
-				case "windows":
-					configPath = fmt.Sprintf("%s/sbanken/config.yaml", os.Getenv("APPDATA"))
+				configDir, err := os.UserConfigDir()
+				if err != nil {
+					return err
 				}
+
+				configPath = fmt.Sprintf("%s/sbanken/config.yaml", configDir)
 			}
 
 			loadConfigFunc := altsrc.InitInputSourceWithContext(
