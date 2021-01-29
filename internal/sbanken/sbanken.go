@@ -48,6 +48,7 @@ type Connection struct {
 	writer   tableWriter
 	output   io.Writer
 	idRegexp *regexp.Regexp
+	config   *Config
 }
 
 // NewEmptyConnection returns a new connection without a connected client.
@@ -79,6 +80,10 @@ func (c *Connection) ConnectClient(ctx context.Context, cliCtx *cli.Context) err
 	c.client = sClient
 
 	return nil
+}
+
+func (c *Connection) SetConfig(cfg *Config) {
+	c.config = cfg
 }
 
 func (c *Connection) getAccountID(ctx context.Context, ID string) (string, error) {
