@@ -6,12 +6,14 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/engvik/sbanken-cli/internal/sbanken"
 	"github.com/urfave/cli/v2"
 	"github.com/urfave/cli/v2/altsrc"
 )
 
 type sbankenConn interface {
 	ConnectClient(context.Context, *cli.Context) error
+	SetConfig(*sbanken.Config)
 	ListAccounts(*cli.Context) error
 	ReadAccount(*cli.Context) error
 	ListCards(*cli.Context) error
@@ -51,10 +53,18 @@ func New(ctx context.Context, conn sbankenConn, tw tableWriter, version string) 
 				configPath = fmt.Sprintf("%s/sbanken/config.yaml", configDir)
 			}
 
+			var hasConfig bool
+
 			loadConfigFunc := altsrc.InitInputSourceWithContext(
 				flags,
 				func(context *cli.Context) (altsrc.InputSourceContext, error) {
-					return altsrc.NewYamlSourceFromFile(configPath)
+					isc, err := altsrc.NewYamlSourceFromFile(configPath)
+
+					if err == nil && isc.Source() != "" {
+						hasConfig = true
+					}
+
+					return isc, err
 				},
 			)
 
@@ -74,6 +84,12 @@ func New(ctx context.Context, conn sbankenConn, tw tableWriter, version string) 
 
 			if err := conn.ConnectClient(ctx, c); err != nil {
 				return err
+			}
+
+			if hasConfig {
+				// Explicitly ignore error, execution should continue without config file
+				cfg, _ := sbanken.LoadConfig(configPath)
+				conn.SetConfig(cfg)
 			}
 
 			tw.SetStyle(c.String("style"))
