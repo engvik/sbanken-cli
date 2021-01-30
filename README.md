@@ -100,6 +100,23 @@ Available styles:
 Global option: `--colors`
 Config field: `colors: true`
 
+### Account Aliases
+
+Passing the account ID can be tiring. You can set up aliases for your IDs in the config file.
+
+Config field: `account-aliases`
+
+Config example:
+
+```
+account-aliases:
+    1337539ABCD9357331DCBA1337539ABC: "checking"
+```
+
+Usage example:
+
+`sbanken a r --id checking`
+
 ## Usage
 
 ```
