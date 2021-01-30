@@ -3,11 +3,13 @@ package sbanken
 import (
 	"fmt"
 	"io/ioutil"
+	"log"
 
 	"gopkg.in/yaml.v2"
 )
 
 type Config struct {
+	AccountAliases map[string]string `yaml:"account-aliases"`
 }
 
 func LoadConfig(path string) (*Config, error) {
@@ -18,6 +20,7 @@ func LoadConfig(path string) (*Config, error) {
 
 	var cfg Config
 	if err := yaml.Unmarshal(data, &cfg); err != nil {
+		log.Println(err)
 		return nil, fmt.Errorf("unmarshal yaml file: %w", err)
 	}
 

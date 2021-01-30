@@ -86,7 +86,35 @@ func (c *Connection) SetConfig(cfg *Config) {
 	c.config = cfg
 }
 
-func (c *Connection) getAccountID(ctx context.Context, ID string) (string, error) {
+func (c *Connection) getAccountID(ctx *cli.Context) (string, error) {
+	ID := ctx.String("id")
+
+	if !c.idRegexp.MatchString(ID) {
+		aliasID := c.getAccountIDFromAlias(ID)
+		if aliasID != "" {
+			return aliasID, nil
+		}
+
+		return c.getAccountIDByName(ctx.Context, ID)
+	}
+
+	return ID, nil
+}
+
+func (c *Connection) getAccountIDWithID(ctx context.Context, ID string) (string, error) {
+	if !c.idRegexp.MatchString(ID) {
+		aliasID := c.getAccountIDFromAlias(ID)
+		if aliasID != "" {
+			return aliasID, nil
+		}
+
+		return c.getAccountIDByName(ctx, ID)
+	}
+
+	return ID, nil
+}
+
+func (c *Connection) getAccountIDByName(ctx context.Context, ID string) (string, error) {
 	accounts, err := c.client.ListAccounts(ctx)
 	if err != nil {
 		return "", err
@@ -108,4 +136,18 @@ func (c *Connection) getAccountID(ctx context.Context, ID string) (string, error
 	}
 
 	return ID, nil
+}
+
+func (c *Connection) getAccountIDFromAlias(alias string) string {
+	if len(c.config.AccountAliases) == 0 {
+		return ""
+	}
+
+	for k, v := range c.config.AccountAliases {
+		if v == alias {
+			return k
+		}
+	}
+
+	return ""
 }
