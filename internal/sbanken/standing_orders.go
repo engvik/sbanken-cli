@@ -6,21 +6,17 @@ import (
 
 // ListStandingOrders handles the standing orders command.
 func (c *Connection) ListStandingOrders(ctx *cli.Context) error {
-	accountID := ctx.String("id")
-	detailedOutput := ctx.Bool("details")
-
-	if !c.idRegexp.MatchString(accountID) {
-		var err error
-		accountID, err = c.getAccountID(ctx.Context, accountID)
-		if err != nil {
-			return err
-		}
+	accountID, err := c.getAccountID(ctx)
+	if err != nil {
+		return err
 	}
 
 	standingOrders, err := c.client.ListStandingOrders(ctx.Context, accountID)
 	if err != nil {
 		return err
 	}
+
+	detailedOutput := ctx.Bool("details")
 
 	c.writer.ListStandingOrders(standingOrders, detailedOutput)
 

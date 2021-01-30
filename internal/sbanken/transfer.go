@@ -9,23 +9,18 @@ import (
 func (c *Connection) Transfer(ctx *cli.Context) error {
 	q := parseTransferQuery(ctx)
 
-	if !c.idRegexp.MatchString(q.FromAccountID) {
-		fromAccountID, err := c.getAccountID(ctx.Context, q.FromAccountID)
-		if err != nil {
-			return err
-		}
-
-		q.FromAccountID = fromAccountID
+	fromAccountID, err := c.getAccountIDWithID(ctx.Context, q.FromAccountID)
+	if err != nil {
+		return err
 	}
 
-	if !c.idRegexp.MatchString(q.ToAccountID) {
-		toAccountID, err := c.getAccountID(ctx.Context, q.ToAccountID)
-		if err != nil {
-			return err
-		}
-
-		q.ToAccountID = toAccountID
+	toAccountID, err := c.getAccountIDWithID(ctx.Context, q.ToAccountID)
+	if err != nil {
+		return err
 	}
+
+	q.FromAccountID = fromAccountID
+	q.ToAccountID = toAccountID
 
 	if err := c.client.Transfer(ctx.Context, q); err != nil {
 		return err

@@ -9,27 +9,24 @@ import (
 
 // ListTransactions handles the list transactions command.
 func (c *Connection) ListTransactions(ctx *cli.Context) error {
-	accountID := ctx.String("id")
-	detailedOutput := ctx.Bool("details")
-	cardDetails := ctx.Bool("card-details")
-	transactionDetails := ctx.Bool("transaction-details")
 	q, err := parseTransactionListQuery(ctx)
 	if err != nil {
 		return err
 	}
 
-	if !c.idRegexp.MatchString(accountID) {
-		var err error
-		accountID, err = c.getAccountID(ctx.Context, accountID)
-		if err != nil {
-			return err
-		}
+	accountID, err := c.getAccountID(ctx)
+	if err != nil {
+		return err
 	}
 
 	transactions, err := c.client.ListTransactions(ctx.Context, accountID, q)
 	if err != nil {
 		return err
 	}
+
+	detailedOutput := ctx.Bool("details")
+	cardDetails := ctx.Bool("card-details")
+	transactionDetails := ctx.Bool("transaction-details")
 
 	c.writer.ListTransactions(transactions, detailedOutput, cardDetails, transactionDetails)
 

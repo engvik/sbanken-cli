@@ -9,7 +9,7 @@ import (
 )
 
 type Config struct {
-	AccountAliases map[string]string `yaml:"account-aliases,omitempty"`
+	AccountAliases map[string]string `yaml:"account-aliases"`
 }
 
 func LoadConfig(path string) (*Config, error) {

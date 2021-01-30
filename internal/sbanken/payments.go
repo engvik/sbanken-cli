@@ -10,13 +10,9 @@ import (
 
 // ListPayments handles the payments list command.
 func (c *Connection) ListPayments(ctx *cli.Context) error {
-	accountID := ctx.String("id")
-	if !c.idRegexp.MatchString(accountID) {
-		var err error
-		accountID, err = c.getAccountID(ctx.Context, accountID)
-		if err != nil {
-			return err
-		}
+	accountID, err := c.getAccountID(ctx)
+	if err != nil {
+		return err
 	}
 
 	q := parsePaymentListQuery(ctx)
@@ -34,15 +30,11 @@ func (c *Connection) ListPayments(ctx *cli.Context) error {
 
 // ReadPayment handles the payments read command.
 func (c *Connection) ReadPayment(ctx *cli.Context) error {
-	accountID := ctx.String("account-id")
 	paymentID := ctx.String("id")
 
-	if !c.idRegexp.MatchString(accountID) {
-		var err error
-		accountID, err = c.getAccountID(ctx.Context, accountID)
-		if err != nil {
-			return err
-		}
+	accountID, err := c.getAccountID(ctx)
+	if err != nil {
+		return err
 	}
 
 	if !c.idRegexp.MatchString(paymentID) {

@@ -18,13 +18,9 @@ func (c *Connection) ListAccounts(ctx *cli.Context) error {
 
 // ReadAccount handles the accounts read command.
 func (c *Connection) ReadAccount(ctx *cli.Context) error {
-	ID := ctx.String("id")
-	if !c.idRegexp.MatchString(ID) {
-		var err error
-		ID, err = c.getAccountID(ctx.Context, ID)
-		if err != nil {
-			return err
-		}
+	ID, err := c.getAccountID(ctx)
+	if err != nil {
+		return err
 	}
 
 	account, err := c.client.ReadAccount(ctx.Context, ID)
