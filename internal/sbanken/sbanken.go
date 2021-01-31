@@ -25,6 +25,7 @@ type sbankenClient interface {
 	ListStandingOrders(context.Context, string) ([]sbanken.StandingOrder, error)
 	ListTransactions(context.Context, string, *sbanken.TransactionListQuery) ([]sbanken.Transaction, error)
 	Transfer(context.Context, *sbanken.TransferQuery) error
+	GetCustomer(context.Context) (sbanken.Customer, error)
 }
 
 type tableWriter interface {
@@ -40,6 +41,7 @@ type tableWriter interface {
 	ListStandingOrders([]sbanken.StandingOrder, bool)
 	ListTransactions([]sbanken.Transaction, bool, bool, bool)
 	Transfer(*sbanken.TransferQuery)
+	GetCustomer(sbanken.Customer)
 }
 
 // Connection holds the sbanken client and the output writer.
@@ -66,11 +68,12 @@ func NewEmptyConnection(tw tableWriter) (*Connection, error) {
 }
 
 // ConnectClient sets up a connection to the sbanken client.
-func (c *Connection) ConnectClient(ctx context.Context, cliCtx *cli.Context) error {
+func (c *Connection) ConnectClient(ctx context.Context, cliCtx *cli.Context, version string) error {
 	cfg := &sbanken.Config{
 		ClientID:     cliCtx.String("client-id"),
 		ClientSecret: cliCtx.String("client-secret"),
 		CustomerID:   cliCtx.String("customer-id"),
+		UserAgent:    fmt.Sprintf("sbanken-cli/%s (github.com/engvik/sbanken-cli)", version),
 	}
 	sClient, err := sbanken.NewClient(ctx, cfg, nil)
 	if err != nil {
