@@ -12,7 +12,7 @@ import (
 )
 
 type sbankenConn interface {
-	ConnectClient(context.Context, *cli.Context) error
+	ConnectClient(context.Context, *cli.Context, string) error
 	SetConfig(*sbanken.Config)
 	ListAccounts(*cli.Context) error
 	ReadAccount(*cli.Context) error
@@ -82,7 +82,7 @@ func New(ctx context.Context, conn sbankenConn, tw tableWriter, version string) 
 				}
 			}
 
-			if err := conn.ConnectClient(ctx, c); err != nil {
+			if err := conn.ConnectClient(ctx, c, version); err != nil {
 				return err
 			}
 

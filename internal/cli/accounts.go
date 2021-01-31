@@ -1,13 +1,10 @@
 package cli
 
 import (
-	"context"
-
 	"github.com/urfave/cli/v2"
 )
 
 type accounts interface {
-	ConnectClient(context.Context, *cli.Context) error
 	ListAccounts(*cli.Context) error
 	ReadAccount(*cli.Context) error
 }

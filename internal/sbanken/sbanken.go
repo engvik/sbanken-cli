@@ -66,11 +66,12 @@ func NewEmptyConnection(tw tableWriter) (*Connection, error) {
 }
 
 // ConnectClient sets up a connection to the sbanken client.
-func (c *Connection) ConnectClient(ctx context.Context, cliCtx *cli.Context) error {
+func (c *Connection) ConnectClient(ctx context.Context, cliCtx *cli.Context, version string) error {
 	cfg := &sbanken.Config{
 		ClientID:     cliCtx.String("client-id"),
 		ClientSecret: cliCtx.String("client-secret"),
 		CustomerID:   cliCtx.String("customer-id"),
+		UserAgent:    fmt.Sprintf("sbanken-cli/%s (github.com/engvik/sbanken-cli)", version),
 	}
 	sClient, err := sbanken.NewClient(ctx, cfg, nil)
 	if err != nil {
