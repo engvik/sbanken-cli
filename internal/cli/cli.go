@@ -26,6 +26,7 @@ type sbankenConn interface {
 	ListStandingOrders(*cli.Context) error
 	ListTransactions(*cli.Context) error
 	Transfer(*cli.Context) error
+	GetCustomer(*cli.Context) error
 }
 
 type tableWriter interface {
@@ -106,6 +107,7 @@ func New(ctx context.Context, conn sbankenConn, tw tableWriter, version string) 
 			getStandingOrdersCommand(conn),
 			getTransactionsCommand(conn),
 			getTransfersCommand(conn),
+			getCustomerCommand(conn),
 		},
 	}
 

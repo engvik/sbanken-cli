@@ -25,6 +25,7 @@ type sbankenClient interface {
 	ListStandingOrders(context.Context, string) ([]sbanken.StandingOrder, error)
 	ListTransactions(context.Context, string, *sbanken.TransactionListQuery) ([]sbanken.Transaction, error)
 	Transfer(context.Context, *sbanken.TransferQuery) error
+	GetCustomer(context.Context) (sbanken.Customer, error)
 }
 
 type tableWriter interface {
@@ -40,6 +41,7 @@ type tableWriter interface {
 	ListStandingOrders([]sbanken.StandingOrder, bool)
 	ListTransactions([]sbanken.Transaction, bool, bool, bool)
 	Transfer(*sbanken.TransferQuery)
+	GetCustomer(sbanken.Customer)
 }
 
 // Connection holds the sbanken client and the output writer.
