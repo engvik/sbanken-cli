@@ -127,7 +127,7 @@ USAGE:
    main [global options] command [command options] [arguments...]
 
 VERSION:
-   1.2.0
+   1.3.0
 
 COMMANDS:
    accounts, a        list and read accounts
@@ -137,6 +137,7 @@ COMMANDS:
    standingorders, s  list standing orders
    transactions, ta   list transactions
    transfers, tf      transfer money between accounts
+   customer, cu       get customer data
    help, h            Shows a list of commands or help for one command
 
 GLOBAL OPTIONS:
