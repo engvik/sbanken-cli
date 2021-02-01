@@ -117,6 +117,14 @@ Usage example:
 
 `sbanken a r --id checking`
 
+### HTTP Timeout
+
+Number of seconds to wait before timing out http requests.
+
+Global option: `--http-timeout value`
+Config option: `http-timeout: value`
+Default: `30`
+
 ## Usage
 
 ```
@@ -146,6 +154,7 @@ GLOBAL OPTIONS:
    --customer-id value, --cuid value  customer id [$SBANKEN_CUSTOMER_ID]
    --style value                      set output style
    --colors                           add colors to values (default: false)
+   --http-timeout value               timeout in seconds (default: 30)
    --config value, -c value           path to YAML config [$SBANKEN_CONFIG]
    --help, -h                         show help (default: false)
    --version, -v                      print the version (default: false)
