@@ -33,6 +33,11 @@ func getGlobalFlags() []cli.Flag {
 			Name:  "colors",
 			Usage: "add colors to values",
 		}),
+		altsrc.NewIntFlag(&cli.IntFlag{
+			Name:  "http-timeout",
+			Usage: "timeout in seconds",
+			Value: 30,
+		}),
 		&cli.StringFlag{
 			Name:    "config",
 			Usage:   "path to YAML config",
