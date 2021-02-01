@@ -4,9 +4,11 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"net/http"
 	"os"
 	"regexp"
 	"strings"
+	"time"
 
 	"github.com/engvik/sbanken-go"
 	"github.com/urfave/cli/v2"
@@ -75,7 +77,12 @@ func (c *Connection) ConnectClient(ctx context.Context, cliCtx *cli.Context, ver
 		CustomerID:   cliCtx.String("customer-id"),
 		UserAgent:    fmt.Sprintf("sbanken-cli/%s (github.com/engvik/sbanken-cli)", version),
 	}
-	sClient, err := sbanken.NewClient(ctx, cfg, nil)
+
+	httpClient := &http.Client{
+		Timeout: time.Second * time.Duration(cliCtx.Int("http-timeout")),
+	}
+
+	sClient, err := sbanken.NewClient(ctx, cfg, httpClient)
 	if err != nil {
 		return err
 	}
