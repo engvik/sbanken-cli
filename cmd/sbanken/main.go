@@ -18,7 +18,6 @@ func main() {
 	writer := table.NewWriter()
 	writer.SetOutputMirror(os.Stdout)
 
-	panic("crapp")
 	conn, err := sbanken.NewEmptyConnection(writer)
 	if err != nil {
 		log.Fatal(err)
