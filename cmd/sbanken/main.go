@@ -11,13 +11,14 @@ import (
 )
 
 // VERSION is the current sbanken-cli version
-const VERSION string = "1.3.0"
+const VERSION string = "1.4.0"
 
 func main() {
 	ctx := context.Background()
 	writer := table.NewWriter()
 	writer.SetOutputMirror(os.Stdout)
 
+	panic("crapp")
 	conn, err := sbanken.NewEmptyConnection(writer)
 	if err != nil {
 		log.Fatal(err)
