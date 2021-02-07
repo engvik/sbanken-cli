@@ -66,6 +66,7 @@ func NewEmptyConnection(tw tableWriter) (*Connection, error) {
 		writer:   tw,
 		output:   os.Stdout,
 		idRegexp: idRegexp,
+		config:   &Config{},
 	}, nil
 }
 
