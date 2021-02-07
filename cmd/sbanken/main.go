@@ -6,8 +6,8 @@ import (
 	"os"
 
 	"github.com/engvik/sbanken-cli/internal/cli"
+	"github.com/engvik/sbanken-cli/internal/output/table"
 	"github.com/engvik/sbanken-cli/internal/sbanken"
-	"github.com/engvik/sbanken-cli/internal/table"
 )
 
 // VERSION is the current sbanken-cli version

@@ -4,7 +4,7 @@ import (
 	"regexp"
 	"testing"
 
-	"github.com/engvik/sbanken-cli/internal/table"
+	"github.com/engvik/sbanken-cli/internal/output/table"
 )
 
 type testClient struct{}
