@@ -29,6 +29,11 @@ func getGlobalFlags() []cli.Flag {
 			Name:  "style",
 			Usage: "set output style",
 		}),
+		altsrc.NewStringFlag(&cli.StringFlag{
+			Name:  "output",
+			Usage: "set output format",
+			Value: "table",
+		}),
 		altsrc.NewBoolFlag(&cli.BoolFlag{
 			Name:  "colors",
 			Usage: "add colors to values",
