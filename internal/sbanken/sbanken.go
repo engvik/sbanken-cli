@@ -10,6 +10,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/engvik/sbanken-cli/internal/output/json"
 	"github.com/engvik/sbanken-cli/internal/output/table"
 	"github.com/engvik/sbanken-go"
 	"github.com/urfave/cli/v2"
@@ -99,6 +100,9 @@ func (c *Connection) SetConfig(cfg *Config) {
 
 func (c *Connection) SetWriter(ctx *cli.Context) {
 	switch ctx.String("output") {
+	case "json":
+		c.writer = json.NewWriter()
+		c.writer.SetOutputMirror(os.Stdout)
 	case "table":
 		fallthrough
 	default:
