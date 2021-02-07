@@ -16,7 +16,6 @@ $ sbanken accounts list
 +----------------------------------+--------------------+-----------------------------+-------------+----------+-----------+--------------+
 ```
 
-
 ## Prerequisites
 
 * Access to [Sbankens API](https://sbanken.no/bruke/utviklerportalen/). 
@@ -25,6 +24,20 @@ $ sbanken accounts list
 
 1. Download the [latest release](https://github.com/engvik/sbanken-cli/releases)
 2. Extract the executable binary.
+
+## Building from source
+
+### Prerequisites
+
+* [Go >= 1.13](https://golang.org/)
+
+### Build
+
+1. Fetch the repository, for example by using git: `git clone git@github.com:engvik/sbanken-cli.git`
+2. `cd sbanken-cli`
+3. `go build -o sbanken cmd/sbanken/main.go`
+
+This should produce a binary `sbanken`, see `go help build` for more options.
 
 ## Required configuration
 
