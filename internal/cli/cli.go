@@ -14,6 +14,7 @@ import (
 type sbankenConn interface {
 	ConnectClient(context.Context, *cli.Context, string) error
 	SetConfig(*sbanken.Config)
+	SetWriter(*cli.Context)
 	ListAccounts(*cli.Context) error
 	ReadAccount(*cli.Context) error
 	ListCards(*cli.Context) error
@@ -29,13 +30,8 @@ type sbankenConn interface {
 	GetCustomer(*cli.Context) error
 }
 
-type tableWriter interface {
-	SetStyle(string)
-	SetColors(bool)
-}
-
 // New creates a new cli app.
-func New(ctx context.Context, conn sbankenConn, tw tableWriter, version string) *cli.App {
+func New(ctx context.Context, conn sbankenConn, version string) *cli.App {
 	flags := getGlobalFlags()
 
 	app := &cli.App{
@@ -93,8 +89,7 @@ func New(ctx context.Context, conn sbankenConn, tw tableWriter, version string) 
 				conn.SetConfig(cfg)
 			}
 
-			tw.SetStyle(c.String("style"))
-			tw.SetColors(c.Bool("colors"))
+			conn.SetWriter(c)
 
 			return nil
 		},

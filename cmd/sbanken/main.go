@@ -6,7 +6,6 @@ import (
 	"os"
 
 	"github.com/engvik/sbanken-cli/internal/cli"
-	"github.com/engvik/sbanken-cli/internal/output/table"
 	"github.com/engvik/sbanken-cli/internal/sbanken"
 )
 
@@ -15,15 +14,13 @@ const VERSION string = "1.4.0"
 
 func main() {
 	ctx := context.Background()
-	writer := table.NewWriter()
-	writer.SetOutputMirror(os.Stdout)
 
-	conn, err := sbanken.NewEmptyConnection(writer)
+	conn, err := sbanken.NewEmptyConnection()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	app := cli.New(ctx, conn, writer, VERSION)
+	app := cli.New(ctx, conn, VERSION)
 
 	if err := app.Run(os.Args); err != nil {
 		log.Fatal(err)
