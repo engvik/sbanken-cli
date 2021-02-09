@@ -138,6 +138,21 @@ Global option: `--http-timeout value`
 Config option: `http-timeout: value`
 Default: `30`
 
+### Output
+
+Set output format.
+
+Global option: `--output value`
+Config option: `output: value`
+Default: `table`
+
+Available formats:
+
+```
+table
+json
+```
+
 ## Usage
 
 ```
