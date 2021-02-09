@@ -3,6 +3,7 @@ package sbanken
 import (
 	"bytes"
 	"context"
+	"flag"
 	"testing"
 
 	"github.com/engvik/sbanken-cli/internal/output/json"
@@ -12,6 +13,7 @@ import (
 )
 
 var testCustomer = sbanken.Customer{
+	CustomerID:   "1337",
 	FirstName:    "test-first",
 	LastName:     "test-last",
 	EmailAddress: "test@test.com",
@@ -31,6 +33,20 @@ var testCustomer = sbanken.Customer{
 }
 
 var testGetCustomerTable = `+----------------+--------------------------+
+| CustomerID     |                          |
+| First Name     | test-first               |
+| Last Name      | test-last                |
+| Email Address  | test@test.com            |
+| Date of Birth  | 2021-01-31T10:05:54.590Z |
+| Postal Address | {Tester street 1     }   |
+| Street Address | {Tester street 1     }   |
+| Phone Numbers  |                          |
+|                | 1 1337133713371337       |
++----------------+--------------------------+
+`
+
+var testGetCustomerCustomerIDTable = `+----------------+--------------------------+
+| CustomerID     | 1337                     |
 | First Name     | test-first               |
 | Last Name      | test-last                |
 | Email Address  | test@test.com            |
@@ -73,6 +89,37 @@ var testGetCustomerJSON = `{
 }
 `
 
+var testGetCustomerCustomerIDJSON = `{
+  "customerID": "1337",
+  "firstName": "test-first",
+  "lastName": "test-last",
+  "emailAddress": "test@test.com",
+  "dateOfBirth": "2021-01-31T10:05:54.590Z",
+  "postalAddress": {
+    "addressLine1": "Tester street 1",
+    "addressLine2": "",
+    "addressLine3": "",
+    "country": "",
+    "zipCode": "",
+    "city": ""
+  },
+  "streetAddress": {
+    "addressLine1": "Tester street 1",
+    "addressLine2": "",
+    "addressLine3": "",
+    "country": "",
+    "zipCode": "",
+    "city": ""
+  },
+  "phoneNumbers": [
+    {
+      "countryCode": "1",
+      "number": "1337133713371337"
+    }
+  ]
+}
+`
+
 func (c testClient) GetCustomer(context.Context) (sbanken.Customer, error) {
 	return testCustomer, nil
 }
@@ -83,18 +130,49 @@ func TestGetCustomer(t *testing.T) {
 
 	tests := []struct {
 		name string
+		fs   *flag.FlagSet
 		conn Connection
 		exp  []byte
 	}{
 		{
-			name: "should write table output correctly",
+			name: "should write table output without customer id correctly",
+			fs: func() *flag.FlagSet {
+				fs := flag.NewFlagSet("customer-id", flag.ExitOnError)
+				fs.Bool("customer-id", false, "")
+				return fs
+			}(),
 			conn: tableConn,
 			exp:  []byte(testGetCustomerTable),
 		},
 		{
+			name: "should write table output with customer id correctly",
+			fs: func() *flag.FlagSet {
+				fs := flag.NewFlagSet("customer-id", flag.ExitOnError)
+				fs.Bool("customer-id", true, "")
+				return fs
+			}(),
+			conn: tableConn,
+			exp:  []byte(testGetCustomerCustomerIDTable),
+		},
+		{
 			name: "should write json output correctly",
+			fs: func() *flag.FlagSet {
+				fs := flag.NewFlagSet("customer-id", flag.ExitOnError)
+				fs.Bool("customer-id", false, "")
+				return fs
+			}(),
 			conn: JSONConn,
 			exp:  []byte(testGetCustomerJSON),
+		},
+		{
+			name: "should write json output with customer id correctly",
+			fs: func() *flag.FlagSet {
+				fs := flag.NewFlagSet("customer-id", flag.ExitOnError)
+				fs.Bool("customer-id", true, "")
+				return fs
+			}(),
+			conn: JSONConn,
+			exp:  []byte(testGetCustomerCustomerIDJSON),
 		},
 	}
 
@@ -104,7 +182,9 @@ func TestGetCustomer(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			tc.conn.writer.SetOutputMirror(&buf)
 
-			if err := tc.conn.GetCustomer(&cli.Context{}); err != nil {
+			ctx := cli.NewContext(nil, tc.fs, nil)
+
+			if err := tc.conn.GetCustomer(ctx); err != nil {
 				t.Errorf("error running test: %v", err)
 			}
 
