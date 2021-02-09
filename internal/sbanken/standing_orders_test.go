@@ -6,6 +6,8 @@ import (
 	"flag"
 	"testing"
 
+	"github.com/engvik/sbanken-cli/internal/output/json"
+	"github.com/engvik/sbanken-cli/internal/output/table"
 	"github.com/engvik/sbanken-go"
 	"github.com/urfave/cli/v2"
 )
@@ -25,7 +27,7 @@ var testStandingOrder = sbanken.StandingOrder{
 	StandingOrderID:        19,
 }
 
-var testListStandingOrders = `+-------------------+----------------------------+---------------------------+---------------+-------------------+--------+----------------+
+var testListStandingOrdersTable = `+-------------------+----------------------------+---------------------------+---------------+-------------------+--------+----------------+
 | STANDING ORDER ID | CREDIT ACCOUNT NUMBER      | DEBIT ACCOUNT NUMBER      | NEXT DUE DATE | LAST PAYMENT DATE | AMOUNT | FREQUENCY      |
 +-------------------+----------------------------+---------------------------+---------------+-------------------+--------+----------------+
 |                19 | test-credit-account-number | test-debit-account-number | timestamp     | timestamp         |   1337 | test-frequency |
@@ -37,7 +39,7 @@ To see detailed output, use: sbanken standingorders list --id=<ID> --details
 Detailed fields includes: CID, Beneficiary Name, Standing Order Start Date, Standing Order End Date, Standing Order Type, Free Terms
 `
 
-var testListStandingOrdersDetails = `+-------------------+----------------------------+---------------------------+---------------+-------------------+--------+----------------+
+var testListStandingOrdersTableDetails = `+-------------------+----------------------------+---------------------------+---------------+-------------------+--------+----------------+
 | STANDING ORDER ID | CREDIT ACCOUNT NUMBER      | DEBIT ACCOUNT NUMBER      | NEXT DUE DATE | LAST PAYMENT DATE | AMOUNT | FREQUENCY      |
 +-------------------+----------------------------+---------------------------+---------------+-------------------+--------+----------------+
 |                19 | test-credit-account-number | test-debit-account-number | timestamp     | timestamp         |   1337 | test-frequency |
@@ -51,54 +53,86 @@ var testListStandingOrdersDetails = `+-------------------+----------------------
 +-------------------+----------+------------------+---------------------------+-------------------------+---------------------+------------+
 `
 
+var testListStandingOrdersJSON = `[
+  {
+    "freeTerms": null,
+    "beneficiaryName": "test-name",
+    "cId": "test-cid",
+    "creditAccountNumber": "test-credit-account-number",
+    "debitAccountNumber": "test-debit-account-number",
+    "frequency": "test-frequency",
+    "lastPaymentDate": "timestamp",
+    "nextDueDate": "timestamp",
+    "standingOrderEndDate": "timestamp",
+    "standingOrderStartDate": "timestamp",
+    "standingOrderType": "test-type",
+    "amount": 1337,
+    "standingOrderId": 19
+  }
+]
+`
+
 func (c testClient) ListStandingOrders(context.Context, string) ([]sbanken.StandingOrder, error) {
 	return []sbanken.StandingOrder{testStandingOrder}, nil
 }
 
 func TestListStandingOrders(t *testing.T) {
-	conn := testNewConnection(t)
+	tableConn := testNewConnection(t, table.NewWriter())
+	JSONConn := testNewConnection(t, json.NewWriter())
 
 	var buf bytes.Buffer
-	conn.writer.SetOutputMirror(&buf)
 
 	tests := []struct {
 		name string
 		fs   *flag.FlagSet
-		exp  string
+		conn Connection
+		exp  []byte
 	}{
 		{
-			name: "should print expected output without any details",
+			name: "should write table output without any details correctly",
 			fs: func() *flag.FlagSet {
 				fs := flag.NewFlagSet("id", flag.ExitOnError)
 				return fs
 			}(),
-			exp: testListStandingOrders,
+			conn: tableConn,
+			exp:  []byte(testListStandingOrdersTable),
 		},
 		{
-			name: "should print expected output with details",
+			name: "should write table output with details correctly",
 			fs: func() *flag.FlagSet {
 				fs := flag.NewFlagSet("id", flag.ExitOnError)
 				fs.Bool("details", true, "")
 				return fs
 			}(),
-			exp: testListStandingOrdersDetails,
+			conn: tableConn,
+			exp:  []byte(testListStandingOrdersTableDetails),
+		},
+		{
+			name: "should write json output correctly",
+			fs: func() *flag.FlagSet {
+				fs := flag.NewFlagSet("id", flag.ExitOnError)
+				fs.Bool("details", true, "")
+				return fs
+			}(),
+			conn: JSONConn,
+			exp:  []byte(testListStandingOrdersJSON),
 		},
 	}
 
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
+			tc.conn.writer.SetOutputMirror(&buf)
 
 			ctx := cli.NewContext(nil, tc.fs, nil)
 
-			if err := conn.ListStandingOrders(ctx); err != nil {
+			if err := tc.conn.ListStandingOrders(ctx); err != nil {
 				t.Errorf("error running test: %v", err)
 			}
 
-			exp := []byte(tc.exp)
 			got := buf.Bytes()
 
-			if bytes.Compare(got, exp) != 0 {
-				t.Errorf("unexpected bytes: got %s, exp %s", got, exp)
+			if bytes.Compare(got, tc.exp) != 0 {
+				t.Errorf("unexpected bytes: got %s, exp %s", got, tc.exp)
 			}
 
 			buf.Reset()
