@@ -11,6 +11,12 @@ func getCustomerCommand(conn customers) *cli.Command {
 		Name:    "customer",
 		Usage:   "get customer data",
 		Aliases: []string{"cu"},
-		Action:  conn.GetCustomer,
+		Flags: []cli.Flag{
+			&cli.BoolFlag{
+				Name:  "customer-id",
+				Usage: "include customer id in output",
+			},
+		},
+		Action: conn.GetCustomer,
 	}
 }

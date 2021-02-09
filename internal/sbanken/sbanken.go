@@ -10,6 +10,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/engvik/sbanken-cli/internal/output/json"
+	"github.com/engvik/sbanken-cli/internal/output/table"
 	"github.com/engvik/sbanken-go"
 	"github.com/urfave/cli/v2"
 )
@@ -30,8 +32,10 @@ type sbankenClient interface {
 	GetCustomer(context.Context) (sbanken.Customer, error)
 }
 
-type tableWriter interface {
+type outputWriter interface {
 	SetOutputMirror(io.Writer)
+	SetStyle(string)
+	SetColors(bool)
 	ListAccounts([]sbanken.Account)
 	ReadAccount(sbanken.Account)
 	ListCards([]sbanken.Card)
@@ -49,22 +53,19 @@ type tableWriter interface {
 // Connection holds the sbanken client and the output writer.
 type Connection struct {
 	client   sbankenClient
-	writer   tableWriter
-	output   io.Writer
+	writer   outputWriter
 	idRegexp *regexp.Regexp
 	config   *Config
 }
 
 // NewEmptyConnection returns a new connection without a connected client.
-func NewEmptyConnection(tw tableWriter) (*Connection, error) {
+func NewEmptyConnection() (*Connection, error) {
 	idRegexp, err := regexp.Compile("([0-9A-F]){32}")
 	if err != nil {
 		return nil, err
 	}
 
 	return &Connection{
-		writer:   tw,
-		output:   os.Stdout,
 		idRegexp: idRegexp,
 		config:   &Config{},
 	}, nil
@@ -95,6 +96,21 @@ func (c *Connection) ConnectClient(ctx context.Context, cliCtx *cli.Context, ver
 
 func (c *Connection) SetConfig(cfg *Config) {
 	c.config = cfg
+}
+
+func (c *Connection) SetWriter(ctx *cli.Context) {
+	switch ctx.String("output") {
+	case "json":
+		c.writer = json.NewWriter()
+		c.writer.SetOutputMirror(os.Stdout)
+	case "table":
+		fallthrough
+	default:
+		c.writer = table.NewWriter()
+		c.writer.SetOutputMirror(os.Stdout)
+		c.writer.SetStyle(ctx.String("style"))
+		c.writer.SetColors(ctx.Bool("colors"))
+	}
 }
 
 func (c *Connection) getAccountID(ctx *cli.Context) (string, error) {

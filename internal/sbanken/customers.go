@@ -8,6 +8,12 @@ func (c *Connection) GetCustomer(ctx *cli.Context) error {
 		return err
 	}
 
+	includeCustomerID := ctx.Bool("customer-id")
+
+	if !includeCustomerID {
+		customer.CustomerID = ""
+	}
+
 	c.writer.GetCustomer(customer)
 
 	return nil

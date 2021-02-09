@@ -6,6 +6,8 @@ import (
 	"flag"
 	"testing"
 
+	"github.com/engvik/sbanken-cli/internal/output/json"
+	"github.com/engvik/sbanken-cli/internal/output/table"
 	"github.com/engvik/sbanken-go"
 	"github.com/urfave/cli/v2"
 )
@@ -20,7 +22,7 @@ var testAccount = sbanken.Account{
 	CreditLimit: 0,
 }
 
-var testListAccounts = `+---------+-----------+-----------+-------------+---------+-----------+--------------+
+var testListAccountsTable = `+---------+-----------+-----------+-------------+---------+-----------+--------------+
 | ID      | TYPE      | NAME      | NUMBER      | BALANCE | AVAILABLE | CREDIT LIMIT |
 +---------+-----------+-----------+-------------+---------+-----------+--------------+
 | test-id | test-type | test-name | test-number |   13.37 |     13.37 |            0 |
@@ -29,7 +31,20 @@ var testListAccounts = `+---------+-----------+-----------+-------------+-------
 +---------+-----------+-----------+-------------+---------+-----------+--------------+
 `
 
-var testReadAccount = `+--------------+-------------+
+var testListAccountsJSON = `[
+  {
+    "accountId": "test-id",
+    "name": "test-name",
+    "accountType": "test-type",
+    "accountNumber": "test-number",
+    "available": 13.37,
+    "balance": 13.37,
+    "creditLimit": 0
+  }
+]
+`
+
+var testReadAccountTable = `+--------------+-------------+
 | ID           | test-id     |
 | Type         | test-type   |
 | Name         | test-name   |
@@ -38,6 +53,17 @@ var testReadAccount = `+--------------+-------------+
 | Available    | 13.37       |
 | Credit Limit | 0           |
 +--------------+-------------+
+`
+
+var testReadAccountJSON = `{
+  "accountId": "test-id",
+  "name": "test-name",
+  "accountType": "test-type",
+  "accountNumber": "test-number",
+  "available": 13.37,
+  "balance": 13.37,
+  "creditLimit": 0
+}
 `
 
 func (c testClient) ListAccounts(context.Context) ([]sbanken.Account, error) {
@@ -50,40 +76,85 @@ func (c testClient) ReadAccount(context.Context, string) (sbanken.Account, error
 }
 
 func TestListAccounts(t *testing.T) {
-	conn := testNewConnection(t)
+	tableConn := testNewConnection(t, table.NewWriter())
+	JSONConn := testNewConnection(t, json.NewWriter())
 
-	var buf bytes.Buffer
-	conn.writer.SetOutputMirror(&buf)
-
-	if err := conn.ListAccounts(&cli.Context{}); err != nil {
-		t.Errorf("error running test: %v", err)
+	tests := []struct {
+		name string
+		conn Connection
+		exp  []byte
+	}{
+		{
+			name: "should write table output correctly",
+			conn: tableConn,
+			exp:  []byte(testListAccountsTable),
+		},
+		{
+			name: "should write json output correctly",
+			conn: JSONConn,
+			exp:  []byte(testListAccountsJSON),
+		},
 	}
 
-	exp := []byte(testListAccounts)
-	got := buf.Bytes()
+	var buf bytes.Buffer
 
-	if bytes.Compare(got, exp) != 0 {
-		t.Errorf("unexpected bytes: got %s, exp %s", got, exp)
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			tc.conn.writer.SetOutputMirror(&buf)
+
+			if err := tc.conn.ListAccounts(&cli.Context{}); err != nil {
+				t.Errorf("error running test: %v", err)
+			}
+
+			got := buf.Bytes()
+
+			if bytes.Compare(got, tc.exp) != 0 {
+				t.Errorf("unexpected bytes: got %s, exp %s", got, tc.exp)
+			}
+		})
+
+		buf.Reset()
 	}
 }
 
 func TestReadAccount(t *testing.T) {
-	conn := testNewConnection(t)
-
-	var buf bytes.Buffer
-	conn.writer.SetOutputMirror(&buf)
-
-	fs := flag.NewFlagSet("id", flag.ExitOnError)
-	ctx := cli.NewContext(nil, fs, nil)
-
-	if err := conn.ReadAccount(ctx); err != nil {
-		t.Errorf("error running test: %v", err)
+	tests := []struct {
+		name string
+		conn Connection
+		exp  []byte
+	}{
+		{
+			name: "should list table output correctly",
+			conn: testNewConnection(t, table.NewWriter()),
+			exp:  []byte(testReadAccountTable),
+		},
+		{
+			name: "should list json output correctly",
+			conn: testNewConnection(t, json.NewWriter()),
+			exp:  []byte(testReadAccountJSON),
+		},
 	}
 
-	exp := []byte(testReadAccount)
-	got := buf.Bytes()
+	var buf bytes.Buffer
 
-	if bytes.Compare(got, exp) != 0 {
-		t.Errorf("unexpected bytes: got %s, exp %s", got, exp)
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			tc.conn.writer.SetOutputMirror(&buf)
+
+			fs := flag.NewFlagSet("id", flag.ExitOnError)
+			ctx := cli.NewContext(nil, fs, nil)
+
+			if err := tc.conn.ReadAccount(ctx); err != nil {
+				t.Errorf("error running test: %v", err)
+			}
+
+			got := buf.Bytes()
+
+			if bytes.Compare(got, tc.exp) != 0 {
+				t.Errorf("unexpected bytes: got %s, exp %s", got, tc.exp)
+			}
+
+			buf.Reset()
+		})
 	}
 }

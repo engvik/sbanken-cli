@@ -138,6 +138,21 @@ Global option: `--http-timeout value`
 Config option: `http-timeout: value`
 Default: `30`
 
+### Output
+
+Set output format.
+
+Global option: `--output value`
+Config option: `output: value`
+Default: `table`
+
+Available formats:
+
+```
+table
+json
+```
+
 ## Usage
 
 ```
@@ -148,7 +163,7 @@ USAGE:
    main [global options] command [command options] [arguments...]
 
 VERSION:
-   1.3.0
+   1.5.0
 
 COMMANDS:
    accounts, a        list and read accounts
@@ -166,6 +181,7 @@ GLOBAL OPTIONS:
    --client-secret value, -s value    the client secret [$SBANKEN_CLIENT_SECRET]
    --customer-id value, --cuid value  customer id [$SBANKEN_CUSTOMER_ID]
    --style value                      set output style
+   --output value                     set output format (default: "table")
    --colors                           add colors to values (default: false)
    --http-timeout value               timeout in seconds (default: 30)
    --config value, -c value           path to YAML config [$SBANKEN_CONFIG]

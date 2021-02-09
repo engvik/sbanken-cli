@@ -3,13 +3,11 @@ package sbanken
 import (
 	"regexp"
 	"testing"
-
-	"github.com/engvik/sbanken-cli/internal/table"
 )
 
 type testClient struct{}
 
-func testNewConnection(t *testing.T) Connection {
+func testNewConnection(t *testing.T, w outputWriter) Connection {
 	t.Helper()
 
 	idRegexp, err := regexp.Compile(".?")
@@ -19,7 +17,7 @@ func testNewConnection(t *testing.T) Connection {
 
 	return Connection{
 		client:   testClient{},
-		writer:   table.NewWriter(),
+		writer:   w,
 		idRegexp: idRegexp,
 	}
 }

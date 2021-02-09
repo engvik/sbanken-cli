@@ -8,6 +8,7 @@ import (
 )
 
 func (w *Writer) GetCustomer(customer sbanken.Customer) {
+	w.table.AppendRow(table.Row{"CustomerID", customer.CustomerID})
 	w.table.AppendRow(table.Row{"First Name", customer.FirstName})
 	w.table.AppendRow(table.Row{"Last Name", customer.LastName})
 	w.table.AppendRow(table.Row{"Email Address", customer.EmailAddress})
@@ -21,4 +22,7 @@ func (w *Writer) GetCustomer(customer sbanken.Customer) {
 	}
 
 	w.table.Render()
+	w.table.ResetHeaders()
+	w.table.ResetRows()
+	w.table.ResetFooters()
 }
