@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"runtime"
 
 	"github.com/engvik/sbanken-cli/internal/sbanken"
 	"github.com/urfave/cli/v2"
@@ -39,15 +40,9 @@ func New(ctx context.Context, conn sbankenConn, version string) *cli.App {
 		Usage:   "provides an easy way to interact with your bank from the terminal",
 		Version: version,
 		Before: func(c *cli.Context) error {
-			configPath := c.String("config")
-
-			if configPath == "" {
-				configDir, err := os.UserConfigDir()
-				if err != nil {
-					return err
-				}
-
-				configPath = fmt.Sprintf("%s/sbanken/config.yaml", configDir)
+			configPath, err := getConfigPath(c)
+			if err != nil {
+				return err
 			}
 
 			var hasConfig bool
@@ -109,4 +104,37 @@ func New(ctx context.Context, conn sbankenConn, version string) *cli.App {
 	app.EnableBashCompletion = true
 
 	return app
+}
+
+func getConfigPath(c *cli.Context) (string, error) {
+	configPath := c.String("config")
+
+	// No config path specified
+	if configPath == "" {
+		var configDir string
+
+		// Check XDG_CONFIG_HOME on darwin as os.UserConfigDir doesn't
+		// do so.
+		if runtime.GOOS == "darwin" {
+			configDir = os.Getenv("XDG_CONFIG_HOME")
+		}
+
+		// Handle other defaults to the standard library.
+		if configDir == "" {
+			dir, err := os.UserConfigDir()
+			if err != nil {
+				return "", err
+			}
+
+			configDir = dir
+		}
+
+		if runtime.GOOS == "windows" {
+			configPath = fmt.Sprintf(`%s\sbanken\config.yaml`, configDir)
+		} else {
+			configPath = fmt.Sprintf("%s/sbanken/config.yaml", configDir)
+		}
+	}
+
+	return configPath, nil
 }
