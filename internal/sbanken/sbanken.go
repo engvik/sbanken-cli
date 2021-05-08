@@ -28,6 +28,7 @@ type sbankenClient interface {
 	ReadPayment(context.Context, string, string) (sbanken.Payment, error)
 	ListStandingOrders(context.Context, string) ([]sbanken.StandingOrder, error)
 	ListTransactions(context.Context, string, *sbanken.TransactionListQuery) ([]sbanken.Transaction, error)
+	ListArchivedTransactions(context.Context, string, *sbanken.TransactionListQuery) ([]sbanken.Transaction, error)
 	Transfer(context.Context, *sbanken.TransferQuery) error
 	GetCustomer(context.Context) (sbanken.Customer, error)
 }

@@ -10,7 +10,7 @@ func (w *Writer) ListAccounts(accounts []sbanken.Account) {
 		w.setAccountsColors()
 	}
 
-	w.table.AppendHeader(table.Row{"ID", "Type", "Name", "Number", "Balance", "Available", "Credit Limit"})
+	w.table.AppendHeader(table.Row{"ID", "Type", "Owner Customer ID", "Name", "Number", "Balance", "Available", "Credit Limit"})
 
 	var rows []table.Row
 	var balance float32
@@ -18,7 +18,7 @@ func (w *Writer) ListAccounts(accounts []sbanken.Account) {
 	var creditLimit float32
 
 	for _, a := range accounts {
-		rows = append(rows, table.Row{a.ID, a.Type, a.Name, a.Number, a.Balance, a.Available, a.CreditLimit})
+		rows = append(rows, table.Row{a.ID, a.Type, a.OwnerCustomerID, a.Name, a.Number, a.Balance, a.Available, a.CreditLimit})
 		balance += a.Balance
 		available += a.Available
 		creditLimit += a.CreditLimit
@@ -32,6 +32,7 @@ func (w *Writer) ListAccounts(accounts []sbanken.Account) {
 func (w *Writer) ReadAccount(account sbanken.Account) {
 	w.table.AppendRow(table.Row{"ID", account.ID})
 	w.table.AppendRow(table.Row{"Type", account.Type})
+	w.table.AppendRow(table.Row{"Owner Customer ID", account.OwnerCustomerID})
 	w.table.AppendRow(table.Row{"Name", account.Name})
 	w.table.AppendRow(table.Row{"Number", account.Number})
 	w.table.AppendRow(table.Row{"Balance", account.Balance})

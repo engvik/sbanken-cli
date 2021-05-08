@@ -42,6 +42,7 @@ var testTransaction = sbanken.Transaction{
 	Text:                        "test-text",
 	TransactionType:             "test-type",
 	TransactionTypeText:         "test-type-text",
+	TransactionID:               "",
 	ReservationType:             "test-reservation-type",
 	Source:                      "source",
 	Amount:                      999.99,
@@ -51,13 +52,13 @@ var testTransaction = sbanken.Transaction{
 	CardDetailsSpecified:        true,
 }
 
-var testListTransactionsTable = `+-------+-----------+--------+-----------------+---------------+------------------+----------------+
-| INDEX | TEXT      | AMOUNT | ACCOUNTING DATE | INTEREST DATE | TRANSACTION TYPE | IS RESERVATION |
-+-------+-----------+--------+-----------------+---------------+------------------+----------------+
-|     0 | test-text | 999.99 | timestamp       | timestampt    | test-type        | true           |
-+-------+-----------+--------+-----------------+---------------+------------------+----------------+
-|       |           | 999.99 |                 |               |                  |                |
-+-------+-----------+--------+-----------------+---------------+------------------+----------------+
+var testListTransactionsTable = `+-------+----+-----------+--------+-----------------+---------------+------------------+----------------+
+| INDEX | ID | TEXT      | AMOUNT | ACCOUNTING DATE | INTEREST DATE | TRANSACTION TYPE | IS RESERVATION |
++-------+----+-----------+--------+-----------------+---------------+------------------+----------------+
+|     0 |    | test-text | 999.99 | timestamp       | timestampt    | test-type        | true           |
++-------+----+-----------+--------+-----------------+---------------+------------------+----------------+
+|       |    | 999.99    |        |                 |               |                  |                |
++-------+----+-----------+--------+-----------------+---------------+------------------+----------------+
 `
 
 var testListTransactionsTableDetailsText = `
@@ -120,6 +121,7 @@ var testListTransactionsJSON = `[
     "transactionType": "test-type",
     "transactionTypeText": "test-type-text",
     "reservationType": "test-reservation-type",
+    "transactionId": "",
     "source": "source",
     "amount": 999.99,
     "transactionTypeCode": 0,
@@ -132,6 +134,10 @@ var testListTransactionsJSON = `[
 `
 
 func (c testClient) ListTransactions(context.Context, string, *sbanken.TransactionListQuery) ([]sbanken.Transaction, error) {
+	return []sbanken.Transaction{testTransaction}, nil
+}
+
+func (c testClient) ListArchivedTransactions(context.Context, string, *sbanken.TransactionListQuery) ([]sbanken.Transaction, error) {
 	return []sbanken.Transaction{testTransaction}, nil
 }
 
