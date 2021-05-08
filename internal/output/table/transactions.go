@@ -14,6 +14,7 @@ func (w *Writer) ListTransactions(transactions []sbanken.Transaction, detailedOu
 
 	w.table.AppendHeader(table.Row{
 		"Index",
+		"ID",
 		"Text",
 		"Amount",
 		"Accounting Date",
@@ -28,6 +29,7 @@ func (w *Writer) ListTransactions(transactions []sbanken.Transaction, detailedOu
 	for i, tr := range transactions {
 		rows = append(rows, table.Row{
 			i,
+			tr.TransactionID,
 			tr.Text,
 			tr.Amount,
 			tr.AccountingDate,

@@ -16,7 +16,7 @@ func getTransactionsCommand(conn transactions) *cli.Command {
 		Flags: []cli.Flag{
 			&cli.StringFlag{
 				Name:     "id",
-				Usage:    "account id (or name) to list payments from",
+				Usage:    "account id (or name) to list transactions from",
 				Required: true,
 			},
 			&cli.StringFlag{
@@ -53,6 +53,11 @@ func getTransactionsCommand(conn transactions) *cli.Command {
 				Name:    "transaction-details",
 				Usage:   "list more transaction details if applicable",
 				Aliases: []string{"td"},
+			},
+			&cli.BoolFlag{
+				Name:    "archived",
+				Usage:   "lists only archived transactions",
+				Aliases: []string{"a"},
 			},
 		},
 		Action: conn.ListTransactions,

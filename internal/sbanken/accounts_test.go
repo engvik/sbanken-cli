@@ -13,22 +13,23 @@ import (
 )
 
 var testAccount = sbanken.Account{
-	ID:          "test-id",
-	Name:        "test-name",
-	Type:        "test-type",
-	Number:      "test-number",
-	Available:   13.37,
-	Balance:     13.37,
-	CreditLimit: 0,
+	ID:              "test-id",
+	Name:            "test-name",
+	Type:            "test-type",
+	Number:          "test-number",
+	OwnerCustomerID: "test-owner-customer-id",
+	Available:       13.37,
+	Balance:         13.37,
+	CreditLimit:     0,
 }
 
-var testListAccountsTable = `+---------+-----------+-----------+-------------+---------+-----------+--------------+
-| ID      | TYPE      | NAME      | NUMBER      | BALANCE | AVAILABLE | CREDIT LIMIT |
-+---------+-----------+-----------+-------------+---------+-----------+--------------+
-| test-id | test-type | test-name | test-number |   13.37 |     13.37 |            0 |
-+---------+-----------+-----------+-------------+---------+-----------+--------------+
-|         |           |           |             |   13.37 |     13.37 |            0 |
-+---------+-----------+-----------+-------------+---------+-----------+--------------+
+var testListAccountsTable = `+---------+-----------+------------------------+-----------+-------------+---------+-----------+--------------+
+| ID      | TYPE      | OWNER CUSTOMER ID      | NAME      | NUMBER      | BALANCE | AVAILABLE | CREDIT LIMIT |
++---------+-----------+------------------------+-----------+-------------+---------+-----------+--------------+
+| test-id | test-type | test-owner-customer-id | test-name | test-number |   13.37 |     13.37 |            0 |
++---------+-----------+------------------------+-----------+-------------+---------+-----------+--------------+
+|         |           |                        |           | 13.37       |   13.37 |         0 |              |
++---------+-----------+------------------------+-----------+-------------+---------+-----------+--------------+
 `
 
 var testListAccountsJSON = `[
@@ -37,6 +38,7 @@ var testListAccountsJSON = `[
     "name": "test-name",
     "accountType": "test-type",
     "accountNumber": "test-number",
+    "ownerCustomerId": "test-owner-customer-id",
     "available": 13.37,
     "balance": 13.37,
     "creditLimit": 0
@@ -44,15 +46,16 @@ var testListAccountsJSON = `[
 ]
 `
 
-var testReadAccountTable = `+--------------+-------------+
-| ID           | test-id     |
-| Type         | test-type   |
-| Name         | test-name   |
-| Number       | test-number |
-| Balance      | 13.37       |
-| Available    | 13.37       |
-| Credit Limit | 0           |
-+--------------+-------------+
+var testReadAccountTable = `+-------------------+------------------------+
+| ID                | test-id                |
+| Type              | test-type              |
+| Owner Customer ID | test-owner-customer-id |
+| Name              | test-name              |
+| Number            | test-number            |
+| Balance           | 13.37                  |
+| Available         | 13.37                  |
+| Credit Limit      | 0                      |
++-------------------+------------------------+
 `
 
 var testReadAccountJSON = `{
@@ -60,6 +63,7 @@ var testReadAccountJSON = `{
   "name": "test-name",
   "accountType": "test-type",
   "accountNumber": "test-number",
+  "ownerCustomerId": "test-owner-customer-id",
   "available": 13.37,
   "balance": 13.37,
   "creditLimit": 0

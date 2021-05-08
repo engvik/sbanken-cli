@@ -19,14 +19,16 @@ var testCard = sbanken.Card{
 	Type:          "test-type",
 	ProductCode:   "test-code",
 	AccountNumber: "987654321",
+	AccountOwner:  "183654729",
+	CustomerID:    "1337",
 	VersionNumber: 5,
 }
 
-var testListCardsTable = `+-----------+-----------+--------------+-----------+----------------+------------+-------------+----------------+
-| ID        | TYPE      | PRODUCT CODE | NUMBER    | ACCOUNT NUMBER | EXPIRYDATE | STATUS      | VERSION NUMBER |
-+-----------+-----------+--------------+-----------+----------------+------------+-------------+----------------+
-| test-card | test-type | test-code    | 123456789 | 987654321      | timestamp  | test-status |              5 |
-+-----------+-----------+--------------+-----------+----------------+------------+-------------+----------------+
+var testListCardsTable = `+-----------+-----------+--------------+-------------+---------------+-----------+----------------+------------+-------------+----------------+
+| ID        | TYPE      | PRODUCT CODE | CUSTOMER ID | ACCOUNT OWNER | NUMBER    | ACCOUNT NUMBER | EXPIRYDATE | STATUS      | VERSION NUMBER |
++-----------+-----------+--------------+-------------+---------------+-----------+----------------+------------+-------------+----------------+
+| test-card | test-type | test-code    | 1337        | 183654729     | 123456789 | 987654321      | timestamp  | test-status |              5 |
++-----------+-----------+--------------+-------------+---------------+-----------+----------------+------------+-------------+----------------+
 `
 
 var testListCardsJSON = `[
@@ -38,6 +40,8 @@ var testListCardsJSON = `[
     "cardType": "test-type",
     "productCode": "test-code",
     "accountNumber": "987654321",
+    "accountOwner": "183654729",
+    "customerId": "1337",
     "cardVersionNumber": 5
   }
 ]

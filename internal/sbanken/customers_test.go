@@ -38,8 +38,8 @@ var testGetCustomerTable = `+----------------+--------------------------+
 | Last Name      | test-last                |
 | Email Address  | test@test.com            |
 | Date of Birth  | 2021-01-31T10:05:54.590Z |
-| Postal Address | {Tester street 1     }   |
-| Street Address | {Tester street 1     }   |
+| Postal Address | Tester street 1          |
+| Street Address | Tester street 1          |
 | Phone Numbers  |                          |
 |                | 1 1337133713371337       |
 +----------------+--------------------------+
@@ -51,8 +51,8 @@ var testGetCustomerCustomerIDTable = `+----------------+------------------------
 | Last Name      | test-last                |
 | Email Address  | test@test.com            |
 | Date of Birth  | 2021-01-31T10:05:54.590Z |
-| Postal Address | {Tester street 1     }   |
-| Street Address | {Tester street 1     }   |
+| Postal Address | Tester street 1          |
+| Street Address | Tester street 1          |
 | Phone Numbers  |                          |
 |                | 1 1337133713371337       |
 +----------------+--------------------------+
@@ -68,6 +68,7 @@ var testGetCustomerJSON = `{
     "addressLine1": "Tester street 1",
     "addressLine2": "",
     "addressLine3": "",
+    "addressLine4": "",
     "country": "",
     "zipCode": "",
     "city": ""
@@ -76,6 +77,7 @@ var testGetCustomerJSON = `{
     "addressLine1": "Tester street 1",
     "addressLine2": "",
     "addressLine3": "",
+    "addressLine4": "",
     "country": "",
     "zipCode": "",
     "city": ""
@@ -99,6 +101,7 @@ var testGetCustomerCustomerIDJSON = `{
     "addressLine1": "Tester street 1",
     "addressLine2": "",
     "addressLine3": "",
+    "addressLine4": "",
     "country": "",
     "zipCode": "",
     "city": ""
@@ -107,6 +110,7 @@ var testGetCustomerCustomerIDJSON = `{
     "addressLine1": "Tester street 1",
     "addressLine2": "",
     "addressLine3": "",
+    "addressLine4": "",
     "country": "",
     "zipCode": "",
     "city": ""

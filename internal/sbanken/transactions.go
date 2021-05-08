@@ -1,6 +1,7 @@
 package sbanken
 
 import (
+	"context"
 	"time"
 
 	"github.com/engvik/sbanken-go"
@@ -19,7 +20,9 @@ func (c *Connection) ListTransactions(ctx *cli.Context) error {
 		return err
 	}
 
-	transactions, err := c.client.ListTransactions(ctx.Context, accountID, q)
+	archived := ctx.Bool("archived")
+
+	transactions, err := c.getTransactions(ctx.Context, accountID, q, archived)
 	if err != nil {
 		return err
 	}
@@ -31,6 +34,14 @@ func (c *Connection) ListTransactions(ctx *cli.Context) error {
 	c.writer.ListTransactions(transactions, detailedOutput, cardDetails, transactionDetails)
 
 	return nil
+}
+
+func (c *Connection) getTransactions(ctx context.Context, accountID string, q *sbanken.TransactionListQuery, archived bool) ([]sbanken.Transaction, error) {
+	if archived {
+		return c.client.ListArchivedTransactions(ctx, accountID, q)
+	}
+
+	return c.client.ListTransactions(ctx, accountID, q)
 }
 
 func parseTransactionListQuery(ctx *cli.Context) (*sbanken.TransactionListQuery, error) {
