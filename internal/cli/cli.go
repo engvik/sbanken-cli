@@ -68,10 +68,6 @@ func New(ctx context.Context, conn sbankenConn, version string) *cli.App {
 				if c.String("client-secret") == "" {
 					return errors.New("client-secret is a required parameter")
 				}
-
-				if c.String("customer-id") == "" {
-					return errors.New("customer-id is a required parameter")
-				}
 			}
 
 			if err := conn.ConnectClient(ctx, c, version); err != nil {

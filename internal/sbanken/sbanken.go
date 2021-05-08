@@ -76,7 +76,6 @@ func (c *Connection) ConnectClient(ctx context.Context, cliCtx *cli.Context, ver
 	cfg := &sbanken.Config{
 		ClientID:     cliCtx.String("client-id"),
 		ClientSecret: cliCtx.String("client-secret"),
-		CustomerID:   cliCtx.String("customer-id"),
 		UserAgent:    fmt.Sprintf("sbanken-cli/%s (github.com/engvik/sbanken-cli)", version),
 	}
 
