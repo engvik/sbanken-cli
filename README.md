@@ -163,7 +163,7 @@ USAGE:
    main [global options] command [command options] [arguments...]
 
 VERSION:
-   1.5.0
+   1.6.0
 
 COMMANDS:
    accounts, a        list and read accounts
