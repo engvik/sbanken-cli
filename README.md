@@ -41,7 +41,7 @@ This should produce a binary `sbanken`, see `go help build` for more options.
 
 ## Required configuration
 
-The interact with Sbanken you must provide a client ID, client secret and customer ID. See link under [Prerequisites](https://sbanken.no/bruke/utviklerportalen/) on how to obtain the client ID and client secret. The customer ID is your social security number.
+The interact with Sbanken you must provide a client ID and client secret. See link under [Prerequisites](https://sbanken.no/bruke/utviklerportalen/) on how to obtain the client ID and client secret.
 
 There are three ways to pass these values to `sbanken`:
 
@@ -50,7 +50,6 @@ There are three ways to pass these values to `sbanken`:
 ```yaml
 client-id: "my-client-id"
 client-secret: "my-client-secret"
-customer-id: "my-customer-id"
 ```
 
 | **OS**  | **Default config locations**                                                                    |
@@ -70,11 +69,11 @@ or
 
 ### Environment variables
 
-`SBANKEN_CLIENT_ID="my-client-id" SBANKEN_CLIENT_SECRET="my-client-secret" CUSTOMER_ID="my-customer-id" sbanken accounts list`
+`SBANKEN_CLIENT_ID="my-client-id" SBANKEN_CLIENT_SECRET="my-client-secret" sbanken accounts list`
 
 ### Global application options
 
-`sbanken --client-id="my-client-id" --client-secret="my-client-secret" --customer-id="my-customer-id" accounts list`
+`sbanken --client-id="my-client-id" --client-secret="my-client-secret" accounts list`
 
 ## Optional configuration
 
